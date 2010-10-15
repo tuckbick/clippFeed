@@ -1,3 +1,40 @@
+<?php
+
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', dirname(__FILE__) . '/error_log.txt');
+error_reporting(E_ALL);
+
+header('HTTP/1.1 200 OK');
+header('Expires: '.gmdate("D, d M Y H:i:s", time() + 604800 ).' GMT');
+
+// gzip
+if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start();
+
+require_once '../ti.php';
+blockbase();
+/*
+$pages = array ( 
+	'blog' => 'Blog',
+	'links' => 'Links',
+	'portfolio' => 'Portfolio',
+	'contact' => 'Contact'
+);
+
+function nav ( $current = 'blog' ) {
+	global $pages;
+	$html = '<ul>';
+	foreach ( $pages as $ascii=>$page ) {
+		$class = '';
+		if( $ascii == $current) {
+			$class = 'class="current"';
+		}
+		$html .= '<li><a '.$class.' href="'.$ascii.'" rel="prefetch">'.$page.'</a></li>';
+	}
+	return $html . '</ul>';
+}
+*/
+?>
 <!doctype html>
 <html lang="en" class="no-js">
 <head>
@@ -28,7 +65,7 @@
     </header>
     
     <div id="main">
-
+        <?php startblock('content') ?>page left intentionally blank<?php endblock() ?>
     </div>
     
     <footer>
