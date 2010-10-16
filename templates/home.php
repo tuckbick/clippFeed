@@ -34,6 +34,7 @@ startblock('readyScript'); ?>
 			uid: 0
 		},
 		success: function( data ) {
+		
 			var ret ='<ul>';
 			for(var i in data) {
 				ret += '<li><a href="javascript:getVideo('+ data[i].cid +')">'+ data[i].c_title +'</a></li>';

@@ -89,19 +89,14 @@ function get_video($vid,$sid) {
 	return $video;
 }
 
-function add_clip($vid,$sid) {
-	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
-	if(isset($cookies['uid'])) {
-		$con = con();
-		$video = get_video($vid,$sid);
-		$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`) VALUES ("'.$vid.'","'.$video['title'].'","'.$video['desc'].'",'.$sid.')'; 
-		$result = mysql_query($query);
-		discon($con);
-		if($result) {
-			add_assoc_uid($vid,$cookies);
-		}
-	} else {
-		$result = "unauthenticated user";
+function add_clip($vid,$sid,$uid) {
+	$con = con();
+	$video = get_video($vid,$sid);
+	$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`) VALUES ("'.$vid.'","'.$video['title'].'","'.$video['desc'].'",'.$sid.')'; 
+	$result = mysql_query($query);
+	discon($con);
+	if($result) {
+		add_assoc_uid($vid,$cookies);
 	}
 	return $result;
 }

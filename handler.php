@@ -29,7 +29,11 @@ switch($_GET['action']) {
 		break;
 	case "getUID":
 		$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
-		$return['uid'] = $cookies['uid'];
+		if($cookies) {
+			$return['uid'] = $cookies['uid'];
+		} else {
+			$return['uid'] = 0;
+		}
 		break;
 	default:
 		$return = "";
