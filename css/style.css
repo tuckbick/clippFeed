@@ -79,6 +79,8 @@ button {  width: auto; overflow: visible; }
 body {
 	background-color:#FFEEEE;
 	background-image:url(../assets/bg.jpg);
+	background-position:center center;
+	background-attachment:fixed;
 }
 
 #new_url_preview {
@@ -93,6 +95,7 @@ body {
 	margin:0 auto;
 	background-color:#3D8FC3;
 	min-height:640px;
+	opacity:0.9;
 }
 
 #main {
