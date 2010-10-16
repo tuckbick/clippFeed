@@ -85,11 +85,32 @@ function nav ( $current = 'blog' ) {
 
     </footer>
   </div> <!-- end of #container -->
-
+  <div id="fb-root"></div>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script>!window.jQuery && document.write('<script src="js/jquery-1.4.2.min.js"><\/script>')</script>
   <script src="js/plugins.js?v=1"></script>
   <script src="js/script.js?v=1"></script>
+  <script src="http://connect.facebook.net/en_US/all.js"></script>
+  <script>
+      FB.init({appId: '148596221850855', status: true, cookie: true, xfbml: true});
+      FB.Event.subscribe('auth.sessionChange', function(response) {
+        if (response.session) {
+          // A user has logged in, and a new cookie has been saved
+        } else {
+          // The user has logged out, and the cookie has been cleared
+        }
+      });
+  </script>
+  <script>
+      $(function(){
+          <?php emptyblock('script') ?>
+      });
+  </script>
+  <script>
+      $(document).ready(function() {
+              <?php emptyblock('readyScript') ?>
+      });
+  </script>
 
   <!--[if lt IE 7 ]>
     <script src="js/dd_belatedpng.js?v=1"></script>
@@ -99,7 +120,7 @@ function nav ( $current = 'blog' ) {
   <script src="js/profiling/config.js?v=1"></script>
 
   <script>
-   var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']]; 
+   var _gaq = [['_setAccount', 'UA-6013405-1'], ['_trackPageview']]; 
    (function(d, t) {
     var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
     g.async = true; g.src = '//www.google-analytics.com/ga.js'; s.parentNode.insertBefore(g, s);
