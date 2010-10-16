@@ -136,6 +136,7 @@ if(isset($_COOKIE['fbs_148596221850855'])) {
         }
       });
   </script>
+  <?php emptyblock('scriptTag') ?>
   <script>
       $(function(){
           <?php emptyblock('script') ?>
