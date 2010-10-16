@@ -8,7 +8,7 @@ function youtube($url) {
         }
         $data = file_get_contents('http://gdata.youtube.com/feeds/videos/'.$match.'?alt=json');
         if( $data == 'Invalid id' ) {
-            return 0;
+            return '0';
         }
         return $match;
 }
@@ -18,7 +18,7 @@ function vimeo($url) {
         }
         $data = file_get_contents('http://vimeo.com/api/v2/video/'.$match.'.json');
         if( $data == '[]' ) {
-            return 0;
+            return '0';
         }
         return $match;
 }
