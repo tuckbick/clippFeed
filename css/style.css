@@ -77,7 +77,12 @@ button {  width: auto; overflow: visible; }
  */
 
 
-
+#new_url_preview {
+	display:none;
+	background-color:#0000FF;
+	width:400px;
+	height:400px;
+}
 
 
 
