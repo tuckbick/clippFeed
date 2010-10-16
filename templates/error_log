@@ -1,1 +1,5 @@
 [16-Oct-2010 02:09:02] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/paulma6/public_html/projects/clippfeed/templates/layout.php on line 23
+[16-Oct-2010 12:14:09] PHP Warning:  include(slayout.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/paulma6/public_html/projects/clippfeed/templates/share.php on line 2
+[16-Oct-2010 12:14:09] PHP Warning:  include(slayout.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/paulma6/public_html/projects/clippfeed/templates/share.php on line 2
+[16-Oct-2010 12:14:09] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'slayout.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/paulma6/public_html/projects/clippfeed/templates/share.php on line 2
+[16-Oct-2010 12:14:09] PHP Fatal error:  Call to undefined function  startblock() in /home/paulma6/public_html/projects/clippfeed/templates/share.php on line 6

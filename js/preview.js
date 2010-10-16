@@ -14,55 +14,149 @@ validate = function( url ) {
     return -1;
 },
 $url = $('#new_url'),
-$preview = $('#new_url_preview'),
-$form = $('#add_clip'),
-lastTime = 0,
-updatePreview = function() {
-	var url = $url.val(),
-		type = validate( url );
-	if( type != -1 ) {
-		$.ajax({
-			url: 'handler.php',
-			dataType: 'json',
-			cache: false,
-			data: {
-				action: 'preview',
-				sid: type,
-				url: url
-			},
-			success: function( data ) {
-				if( data.hasOwnProperty('embed') ) {
-					if( data.embed != '' ) {
-						$preview.slideDown('fast', function(){$preview.html(data.embed);})
-					} else {
-						$preview.html('').delay(20).slideUp('fast');
-					}
-				}
-			},
-			error: function( ) {
-				$preview.html('').slideUp('fast');
-			}
-		});
+$search = $('#search'),
+$preview = $('#clip_embed'),
+$spreview = $('#sclip_embed'),
+$add = $('#add_clip'),
+$sadd = $('#sadd_clip'),
+$delete_video = $('#delete_video'),
+$leftbar = $('#left_bar'),
+$clipembed = $('#clip_embed'),
+lastURLTime = 0,
+lastSearchTime = 0,
+_cid = 0,
+SupdatePreview = function() {
+	var url = $url.val();
+	if( url && url != '' ) {
+    	var type = validate( url );
+    	if( type != -1 ) {
+    		$.ajax({
+    			url: 'handler.php',
+    			dataType: 'json',
+    			cache: false,
+    			data: {
+    				action: 'spreview',
+    				sid: type,
+    				url: url
+    			},
+    			success: function( data ) {
+    				if( data.hasOwnProperty('embed') ) {
+    					if( data.embed != '' ) {
+    					    $spreview.fadeOut(300,function(){$(this).html(data.embed).delay(100).fadeIn(300)});
+    					} else {
+    						$spreview.fadeOut(300,function(){$(this).html('')});
+    					}
+    				}
+    			},
+    			error: function( ) {
+    				$spreview.fadeOut(300,function(){$(this).html('')});
+    			}
+    		});
+    	}
+	} else {
+    	$spreview.fadeOut(300,function(){$(this).html('');$url.val('');});
 	}
+},
+updatePreview = function() {
+	var url = $url.val();
+	if( url && url != '' ) {
+    	var type = validate( url );
+    	if( type != -1 ) {
+    		$.ajax({
+    			url: 'handler.php',
+    			dataType: 'json',
+    			cache: false,
+    			data: {
+    				action: 'preview',
+    				sid: type,
+    				url: url
+    			},
+    			success: function( data ) {
+    				if( data.hasOwnProperty('embed') ) {
+    					if( data.embed != '' ) {
+    					    $preview.fadeOut(300,function(){$(this).html(data.embed).delay(100).fadeIn(300,function(){$delete_video.fadeIn(400)})});
+    					} else {
+    					    $delete_video.fadeOut(300)
+    						$preview.fadeOut(300,function(){$(this).html('')});
+    					}
+    				}
+    			},
+    			error: function( ) {
+    				$delete_video.fadeOut(300)
+    				$preview.fadeOut(300,function(){$(this).html('')});
+    			}
+    		});
+    	}
+	} else {
+    	$delete_video.fadeOut(300)
+    	$preview.fadeOut(300,function(){$(this).html('');$url.val('');});
+	}
+},
+search = function() {
+    var q = $search.val();
+    if( q ) {
+        $.ajax({
+            url: 'handler.php',
+            dataType: 'json',
+            cache: true,
+            data: {
+                action: 'search',
+                term: q
+            },
+            success: function( data ) {
+                var ret = ['<h3>My Videos</h3><ul>'];
+                for(var i in data) {
+                    ret.push( '<li><a href="javascript:getVideo('+ data[i].cid +')">'+ data[i].c_title +'</a><span class="source">'+ data[i].serv_name +'</span></li>' );
+                }
+                ret.push( '<ul>' );
+                $leftbar.html(ret.join(''));
+            },
+            error: function( ) {
+
+            }
+        });
+    }
 };
-$url.focus(function() {
+updatePreview();
+SupdatePreview();
+$url.bind('focusin',function() {
 	if($url.val()=='paste a URL of a video and click add') {
 		$url.val('');
 	}
 });
-updatePreview();
+$url.bind('focusout',function() {
+	if($url.val()=='') {
+		$url.val('paste a URL of a video and click add');
+	}
+});
+$search.bind('focusin',function() {
+	if($search.val()=='Search') {
+		$search.val('');
+	}
+});
+$search.bind('focusout',function() {
+	if($search.val()=='') {
+		$search.val('Search');
+	}
+});
 $url.bind('keyup paste', function(e) {
     var newTime = (new Date()).getTime();
-    if( newTime - lastTime > 500 ) {
-        lastTime = newTime;
+    if( newTime - lastURLTime > 500 ) {
+        lastURLTime = newTime;
         setTimeout(updatePreview,50);
     }
 });
-
-$form.submit(function() {
+$search.bind('keyup paste', function(e) {
+    var newTime = (new Date()).getTime();
+    if( newTime - lastSearchTime > 500 ) {
+        lastSearchTime = newTime;
+        setTimeout(search,50);
+    }
+});
+$add.submit(function() {
     var url = $url.val(),
 		type = validate( url );
-	$preview.html('<img src="assets/loading.gif" title="loading..." />');
+	$preview.hide().html('<img class="loading" src="assets/loading.gif" title="loading..." />').fadeIn('fast');
 	$.ajax({
 		url:'handler.php',
 		dataType:'json',
@@ -74,7 +168,29 @@ $form.submit(function() {
 		},
 		success: function( data ) {
 			$url.val('');
-            $preview.html('<img src="assets/done.png" title="done!" />').delay(2000).slideUp('fast');
+            $preview.html('<img class="loading" src="assets/done.png" title="done!" />').delay(2000).fadeOut(450,function(){$(this).html('')});
+            setTimeout(populateFeed,1000);
+		}
+	});
+	return false;
+});
+$sadd.submit(function() {
+    var url = $url.val(),
+		type = validate( url );
+	$spreview.hide().html('<img class="loading" src="assets/loading.gif" title="loading..." />').fadeIn('fast');
+	$.ajax({
+		url:'handler.php',
+		dataType:'json',
+		cache:'false',
+		data: {
+			action: 'add',
+			sid: type,
+			url: url
+		},
+		success: function( data ) {
+			$url.val('');
+            $spreview.html('<img class="loading" src="assets/done.png" title="done!" />').delay(2000).fadeOut(450,function(){$(this).html('')});
+            setTimeout(window.close,3000);
 		}
 	});
 	return false;

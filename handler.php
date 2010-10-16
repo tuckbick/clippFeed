@@ -8,10 +8,20 @@ include_once "functions2.inc";
 include_once "fb_funcs.php";
 
 $result = "";
+$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
+
 switch($_GET['action']) {
 	case "preview":
 		if(isset($_GET['url']) && isset($_GET['sid']) && extract_vid($_GET['url'],$_GET['sid'])!='0') {
-			$result = get_embed($_GET['url'],$_GET['sid'],300,225);
+			$result = get_embed($_GET['url'],$_GET['sid'],630,467);
+		} else {
+			$result = "";
+		}
+		$return['embed'] = $result;
+		break;
+	case "spreview":
+		if(isset($_GET['url']) && isset($_GET['sid']) && extract_vid($_GET['url'],$_GET['sid'])!='0') {
+			$result = get_embed($_GET['url'],$_GET['sid'],405,300);
 		} else {
 			$result = "";
 		}
@@ -24,23 +34,27 @@ switch($_GET['action']) {
 			$return['success'] = '0';
 		}
 		break;
-	case "getFeed":
-		$return = get_feed();
-		break;
-	case "getUID":
-		$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
-		if($cookies) {
-			$return['uid'] = $cookies['uid'];
+	case "delete":
+		if(isset($_GET['cid'])) {
+			$return['success'] = delete_clip($cookies,$_GET['cid']);
 		} else {
-			$return['uid'] = 0;
+			$return['success'] = false;
 		}
+		break;
+	case "getFeed":
+		$return = get_feed($cookies);
 		break;
 	case "getClipEmbed":
 		if(isset($_GET['cid'])) {
 			$c = get_clip($_GET['cid']);
-			$return['embed'] = get_embed($c['s_url'].$c['vid'],$c['sid'],600,450);
+			$return['embed'] = get_embed($c['s_url'].$c['vid'],$c['sid'],630,467);
 		} else {
 			$return['embed'] = "<p>Please select a valid video!</p>";
+		}
+		break;
+	case "search":
+		if(isset($_GET['term'])) {
+			$return = get_search($cookies,$_GET['term']);
 		}
 		break;
 	default:

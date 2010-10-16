@@ -25,6 +25,9 @@ startblock('content');
         </form>
         <div id="new_url_preview"></div>
         <div id="clip_embed"></div>
+        <div id="below">
+            <a id="delete_video" href="javascript:deleteVideo()">Delete</a>
+        </div>
     </div>
 </div>
 
@@ -35,23 +38,7 @@ startblock('scriptTag'); ?>
 <?php endblock(); 
 
 startblock('readyScript'); ?>
-    $.ajax({
-        url:'handler.php',
-        dataType:'json',
-        cache:'false',
-        data: {
-            action: 'getFeed'
-        },
-        success: function( data ) {
-        
-            var ret ='<ul>';
-            for(var i in data) {
-                ret += '<li><a href="javascript:getVideo('+ data[i].cid +')">'+ data[i].c_title +'</a></li>';
-            }
-            ret += "<ul>";
-            $('#left_bar').html(ret);
-        }
-    });
+	populateFeed();
     
 <?php
 endblock();

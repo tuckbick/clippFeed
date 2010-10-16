@@ -89,12 +89,18 @@ body {
 	height: 400px;
 	margin-top: 1em;
 	text-align: center;
-	width: 57.8em;
+	width: 42.1em;
 }
 
 #container {
 	width:960px;
 	margin: 2em auto;
+	display:relative;
+}
+
+#scontainer {
+	width:600px;
+	margin: 0 auto;
 	display:relative;
 }
 
@@ -109,7 +115,7 @@ body {
 }
 
 #search {
-	background-color:#fff;
+	background-color:#eae7ff;
 	border: 0px;
 	height: 2em;
 	margin: 0px 0.8em 0px 0px;
@@ -121,13 +127,18 @@ body {
 #left_bar {
 	background-color:#fff;
 	height:42em;
-	padding:2em;
-	width: 17.85em;
+	padding:1em;
+	width: 19.85em;
 	margin-top: 1em;
+	overflow:hidden;
 }
 
 #middle {
 	padding-left:23em;
+}
+
+#smiddle {
+	padding:0;
 }
 
 #clip_embed {
@@ -143,6 +154,14 @@ body {
 	border-radius: 0 0 2px 2px;
 }
 
+#smain {
+	padding:1em;
+	min-height:400px;
+	opacity:0.95;
+	-moz-border-radius: 0 0 2px 2px;
+	border-radius: 0 0 2px 2px;
+}
+
 #new_url {
 	border: 0px;
 	height: 2em;
@@ -150,6 +169,16 @@ body {
 	margin-right: 0.8em;
 	padding: 0.2em 0.6em;
 	width: 42.1em;
+}
+
+.s #new_url {
+	border: 0px;
+	height: 2em;
+	margin: 0px 0.8em 0px 0px;
+	margin-right: 0.8em;
+	padding: 0.2em 0.6em;
+	width: 15.1em;
+	float:left;
 }
 
 #add_submit {
@@ -160,6 +189,10 @@ body {
 	height: 2.3em;
 }
 
+#delete_video {
+	display:none;
+}
+
 header {
 	padding:1em;
 	background-color:#FFFFFF;
@@ -167,12 +200,47 @@ header {
 	border-radius: 2px 2px 0 0;
 	height:3.5em;
 }
+
+.s header {
+	-moz-border-radius: 2px 2px 0 0;
+	border-radius: 2px 2px 0 0;
+	height:1em;
+	float:right;
+}
 h1 {
 	font-size:3em;
 	width: 5em;
 	float: left;
 }
-
+h3 {
+	padding-bottom:5px;
+}
+ul {
+	list-style: none;
+}
+li {
+	padding:0.2em;
+	position:relative;
+	left:-30px;
+	white-space:nowrap;
+}
+a:link, a:active {
+	text-decoration:none;
+	color:#a100ff;
+}
+a:visited, a:hover {
+	text-decoration:none;
+	color:#8A0E79;
+}
+.source {
+	color:#999999;
+	font-size:0.8em;
+	margin-left:0.5em;
+}
+.loading {
+	display:block;
+	margin:10em auto;
+}
 
 
 

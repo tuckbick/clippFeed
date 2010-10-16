@@ -7,17 +7,14 @@ $oldPath = set_include_path(get_include_path() . PATH_SEPARATOR . $clientLibrary
 require_once 'Zend/Loader.php';
 Zend_Loader::loadClass('Zend_Gdata_YouTube');
 
-function get_feed($uid=0,$order="c_clips.c_title ASC") {
-	if($uid == 0) {
-		$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
-		$uid = $cookies['uid'];
-	}
-	if($uid!=0) {
+function get_feed($cookies,$page=0,$order="c_clips.c_title ASC") {
+	if($cookies) {
 		$con = con();
+		$count = get_count('c_cid_uid','uid='.$cookies['uid']);
 		$query = 'SELECT * FROM c_cid_uid
 			INNER JOIN c_clips ON c_cid_uid.cid = c_clips.cid
 			INNER JOIN c_servs ON c_clips.sid = c_servs.sid 
-			WHERE c_cid_uid.uid = '.$cookies['uid'].' ORDER BY '.$order;
+			WHERE c_cid_uid.uid = '.$cookies['uid'].' ORDER BY '.$order.' LIMIT 30';
 		$result = mysql_query($query);
 		while($row = mysql_fetch_assoc($result)) {
 			$return[$row['cid']] = $row;
@@ -57,11 +54,11 @@ function get_cid($vid) {
 	return $return;
 }
 
-function get_clip($cid) {
+function get_clip($cid,$limit="LIMIT 1") {
 	$con = con();
 	$query = 'SELECT * FROM c_clips 
 		INNER JOIN c_servs ON c_clips.sid = c_servs.sid 
-		WHERE cid="'.$cid.'" LIMIT 1';
+		WHERE cid='.$cid.' '.$limit;
 	$result = mysql_query($query);
 	while($row = mysql_fetch_assoc($result)) {
 		$return = $row;
@@ -86,6 +83,33 @@ function get_video($vid,$sid) {
 	}
 	return $video;
 }
+
+function get_count($table, $param) {
+	$query = "SELECT COUNT(*) ON ".$table." WHERE ".$param;
+	$result = mysql_query($query);
+	return $result;
+}
+
+function get_search($cookies,$term) {
+	if($term=='') {
+		return get_feed();
+	} else {
+		$con = con();
+		$query = "SELECT * FROM c_clips 
+				INNER JOIN c_cid_uid ON c_cid_uid.cid=c_clips.cid 
+				INNER JOIN c_servs ON c_servs.sid=c_clips.sid 
+				WHERE CONCAT(c_clips.c_title, ' ', c_clips.c_desc) LIKE '%".$term."%'";
+		if($cookies) { $query .= " AND c_cid_uid.uid=".$cookies['uid']; }
+		$result = mysql_query($query);
+		$ret = array();
+		discon($con);
+		while($row = mysql_fetch_assoc($result)) {
+			array_push($ret,$row);
+		}
+	}
+	return $ret;
+}
+
 
 function add_clip($vid,$sid) {
 	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
@@ -112,5 +136,28 @@ function add_assoc_uid($vid,$cookies) {
 	discon($con);
 	return $result;
 }
+
+function delete_clip($cookies,$cid) {
+	if($cookies) {
+		$con = con();
+		$query = "DELETE FROM c_cid_uid WHERE cid=".$cid." AND uid=".$cookies['uid'];
+		$result = mysql_query($query);
+		discon($con);
+	} else {
+		$result = false;
+	}
+	return $result;
+}
+
+/*function here($vid) {
+	$query = "SELECT * FROM c_clips WHERE vid='".$vid."'";
+	$result = mysql_query($query);
+	if(mysql_num_rows($result)!=0) {
+		$return = true;
+	} else {
+		$return = false;
+	}
+	return $return;
+}*/
 
 ?>
