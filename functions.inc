@@ -60,8 +60,31 @@ function get_clip($cid) {
 	return $return;
 }
 
+function get_video($vid,$sid) {
+	switch($sid) {
+		case 0:
+			
+			break;
+		case 1:
+			$video = unserialize(file_get_contents("http://vimeo.com/api/v2/video/".$vid.".php"));
+			$video['desc'] = $video['video_description'];
+			$video['title'] = $video['video_title'];
+			break;
+	}
+	return $video;
+}
+
 function add_clip($vid,$sid) {
-	
+	$con = con();
+	$video = get_video($vid,$sid);
+	$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`)
+		VALUES ("'.$vid.'","'.$video['title'].'","'.$video['desc'].'",'.$sid.')';
+	$result = mysql_query($query);
+	while($row = mysql_fetch_assoc($result)) {
+		$return = $row;
+	}
+	discon($con);
+	return $return;
 }
 
 ?>
