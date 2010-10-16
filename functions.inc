@@ -1,26 +1,11 @@
 <?php
 
 include_once 'functions2.inc';
+include_once 'fb_funcs.php';
 $clientLibraryPath = 'apis/gdata/library';
 $oldPath = set_include_path(get_include_path() . PATH_SEPARATOR . $clientLibraryPath);
 require_once 'Zend/Loader.php';
 Zend_Loader::loadClass('Zend_Gdata_YouTube');
-
-function get_facebook_cookie($app_id, $application_secret) {
-  $args = array();
-  parse_str(trim($_COOKIE['fbs_' . $app_id], '\\"'), $args);
-  ksort($args);
-  $payload = '';
-  foreach ($args as $key => $value) {
-    if ($key != 'sig') {
-      $payload .= $key . '=' . $value;
-    }
-  }
-  if (md5($payload . $application_secret) != $args['sig']) {
-    return null;
-  }
-  return $args;
-}
 
 function get_feed($order="c_clips.c_title ASC") {
 	$cookies['uid'] = 1;
@@ -34,7 +19,7 @@ function get_feed($order="c_clips.c_title ASC") {
 		$return[$row['cid']] = $row;
 	}
 	discon($con);
-	return json_encode($return);
+	return $return;
 }
 
 function get_embed($url,$sid,$width,$height) {

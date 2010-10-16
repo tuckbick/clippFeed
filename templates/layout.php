@@ -17,6 +17,7 @@ header('Expires: '.gmdate("D, d M Y H:i:s", time() + 604800 ).' GMT');
 if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start();
 require_once '../ti.php';
 require_once '../apis/facebook-php-sdk/src/facebook.php';
+require_once '../fb_funcs.php';
 
 // Create our Application instance.
 $facebook = new Facebook(array(
@@ -47,6 +48,11 @@ function nav ( $current = 'blog' ) {
 	return $html . '</ul>';
 }
 */
+
+if(isset($_COOKIE['fbs_148596221850855'])) {
+	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
+}
+
 ?>
 <!doctype html>
 <html lang="en" class="no-js">
@@ -74,8 +80,14 @@ function nav ( $current = 'blog' ) {
 
   <div id="container">
     <header>
+    	<div id="login" style="float:right;">
+        <?php if (isset($cookies)) { ?>
+      	<span style="padding:10px;">Logged in as <fb:name uid="<?php echo $cookies['uid']; ?>" useyou="false"></fb:name></span><fb:profile-pic uid="<?php echo $cookies['uid']; ?>" size="q"></fb:profile-pic>
+   		<?php } else { ?>
+      	<fb:login-button></fb:login-button>
+    	<?php } ?>
+    	</div>
         <h1>clippFeed</h1>
-        <fb:login-button></fb:login-button>
     </header>
     
     <div id="main">
@@ -94,12 +106,33 @@ function nav ( $current = 'blog' ) {
   <script src="js/script.js?v=1"></script>
   <script src="http://connect.facebook.net/en_US/all.js"></script>
   <script>
+  	  $login = $('#login');
       FB.init({appId: '148596221850855', status: true, cookie: true, xfbml: true});
       FB.Event.subscribe('auth.sessionChange', function(response) {
         if (response.session) {
-          // A user has logged in, and a new cookie has been saved
+          $.ajax({
+				url: 'handler.php',
+				dataType: 'json',
+				cache: false,
+				data: {
+					action: 'getUID',
+				},
+				success: function( data ) {
+					$login.html('<span style="padding:10px;">Logged in as <fb:name uid="data.uid" useyou="false"></fb:name></span><fb:profile-pic uid="data.uid" size="q"></fb:profile-pic>');
+				}
+				});
         } else {
-          // The user has logged out, and the cookie has been cleared
+        	 $.ajax({
+				url: 'handler.php',
+				dataType: 'json',
+				cache: false,
+				data: {
+					action: 'end_session',
+				},
+				success: function( data ) {
+					$login.html('<fb:login-button></fb:login-button>');
+				}
+				});
         }
       });
   </script>

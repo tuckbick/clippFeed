@@ -5,6 +5,7 @@ header('Content-type: application/json');
 include_once "connect.php";
 include_once "functions.inc";
 include_once "functions2.inc";
+include_once "fb_funcs.php";
 
 $result = "";
 switch($_GET['action']) {
@@ -22,6 +23,16 @@ switch($_GET['action']) {
 		} else {
 			$return['success'] = '0';
 		}
+		break;
+	case "getFeed":
+		$return = get_feed();
+		break;
+	case "getUID":
+		$cookies = get_facebook_cookie($app_id, $application_secret);
+		$return['uid'] = $cookies['uid'];
+		break;
+	default:
+		$return = "";
 		break;
 }
 
