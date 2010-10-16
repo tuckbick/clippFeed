@@ -88,6 +88,7 @@ body {
 	background-color:#96bdd6;
 	width:400px;
 	height:400px;
+	text-align:center;
 }
 
 #container {
@@ -100,6 +101,14 @@ body {
 	position:absolute;
 }
 
+#left_bar {
+	float:left; background-color:#fff; height:48em; width:150px; margin-right:5px; padding:10px;
+}
+
+#middle {
+	
+}
+
 #main {
 	padding:1em;
 	background-color:#3D8FC3;
@@ -109,8 +118,20 @@ body {
 	border-radius: 0 0 2px 2px;
 }
 
-#new_url_preview {
-	text-align:center;
+#new_url {
+	//border: 1px solid #444;
+	border:0;
+	margin: 0px;
+	padding: 0.2em 0.3em;
+	width: 34em;
+}
+
+#add_submit {
+	//border:1px solid #444444;
+	border:0;
+	margin: 0px;
+	padding: 0.2em 0.3em;
+	width: 5em;
 }
 
 header {
@@ -118,10 +139,12 @@ header {
 	background-color:#FFFFFF;
 	-moz-border-radius: 2px 2px 0 0;
 	border-radius: 2px 2px 0 0;
+	height:3.5em;
 }
 h1 {
 	font-size:3em;
 	width: 5em;
+	float: left;
 }
 
 

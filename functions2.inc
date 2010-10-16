@@ -5,6 +5,7 @@ function youtube($url) {
                 $match = $match[1];
                 $replace = array("watch?v=", "v/", "vi/");
                 $match = str_replace($replace, "", $match);
+                $match = substr($match, 0, 11);
         }
         $data = file_get_contents('http://gdata.youtube.com/feeds/videos/'.$match.'?alt=json');
         if( !$data || $data == 'Invalid id' ) {
