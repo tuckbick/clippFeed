@@ -94,11 +94,19 @@ body {
 	min-height:640px;
 }
 
+#main {
+	padding:1em;
+}
+
+#new_url_preview {
+	text-align:center;
+}
+
 header {
-	
+	padding:1em;
 }
 h1 {
-	font-size:2em;
+	font-size:3em;
 }
 
 
