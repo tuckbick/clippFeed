@@ -1,6 +1,8 @@
 <?php
 include 'layout.php';
 
+$u = isset($_GET['u'])?$_GET['u']:'paste a URL of a video and click add';
+
 startblock('content'); 
 ?>
 
@@ -11,7 +13,7 @@ startblock('content');
 	<div id="middle">
         <form id="add_clip">
         	<label class="visuallyhidden" for="new_url">New Video URL</label>
-            <input id="new_url" name="url" type="text" value="paste a URL of a video and click add" />
+            <input id="new_url" name="url" type="text" value="<?php echo $u ?>" />
             <input type="submit" id="add_submit" value="Add" />
         </form>
         <div id="new_url_preview"></div>

@@ -45,18 +45,6 @@ updatePreview = function() {
 		});
 	}
 };
-var uid;
-$.ajax({
-    url:'handler.php',
-    dataType:'json',
-    cache:'false',
-    data: {
-        action: 'getUID'
-    },
-    success: function(data){
-        uid = data.uid;
-    }
-});
 $url.focus(function() {
 	if($url.val()=='paste a URL of a video and click add') {
 		$url.val('');
@@ -82,8 +70,7 @@ $form.submit(function() {
 		data: {
 			action: 'add',
 			sid: type,
-			url: url,
-			uid: uid
+			url: url
 		},
 		success: function( data ) {
 			$url.val('');

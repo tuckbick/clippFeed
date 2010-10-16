@@ -84,11 +84,12 @@ body {
 }
 
 #new_url_preview {
-	display:none;
-	background-color:#96bdd6;
-	width:400px;
-	height:400px;
-	text-align:center;
+	background-color: #96BDD6;
+	display: none;
+	height: 400px;
+	margin-top: 1em;
+	text-align: center;
+	width: 57.8em;
 }
 
 #container {
@@ -106,7 +107,7 @@ body {
 }
 
 #middle {
-	
+	padding-left:14em;
 }
 
 #main {
@@ -119,19 +120,20 @@ body {
 }
 
 #new_url {
-	//border: 1px solid #444;
-	border:0;
-	margin: 0px;
-	padding: 0.2em 0.3em;
-	width: 34em;
+	border: 0px;
+	height: 2em;
+	margin: 0px 0.8em 0px 0px;
+	margin-right: 0.8em;
+	padding: 0.2em 0.6em;
+	width: 51.2em;
 }
 
 #add_submit {
-	//border:1px solid #444444;
 	border:0;
 	margin: 0px;
 	padding: 0.2em 0.3em;
 	width: 5em;
+	height: 2.3em;
 }
 
 header {
