@@ -1,6 +1,10 @@
 <?php
 
 include_once 'functions2.inc';
+$clientLibraryPath = 'apis/gdata/library';
+$oldPath = set_include_path(get_include_path() . PATH_SEPARATOR . $clientLibraryPath);
+require_once 'Zend/Loader.php';
+Zend_Loader::loadClass('Zend_Gdata_YouTube');
 
 function get_facebook_cookie($app_id, $application_secret) {
   $args = array();
@@ -47,6 +51,17 @@ function get_embed($url,$sid,$width,$height) {
 	return $return;
 }
 
+function get_cid($vid) {
+	$con = con();
+	$query = 'SELECT * FROM c_clips WHERE vid="'.$vid.'" LIMIT 1';
+	$result = mysql_query($query);
+	while($row = mysql_fetch_assoc($result)) {
+		$return = $row['cid'];
+	}
+	discon($con);
+	return $return;
+}
+
 function get_clip($cid) {
 	$con = con();
 	$query = 'SELECT * FROM c_clips 
@@ -63,7 +78,10 @@ function get_clip($cid) {
 function get_video($vid,$sid) {
 	switch($sid) {
 		case 0:
-			
+			$yt = new Zend_Gdata_YouTube();
+			$v_obj = $yt->getVideoEntry($vid);
+			$video['title'] = $v_obj->getVideoTitle();
+			$video['desc'] = $v_obj->getVideoDescription();
 			break;
 		case 1:
 			$video = unserialize(file_get_contents("http://vimeo.com/api/v2/video/".$vid.".php"));
@@ -75,16 +93,17 @@ function get_video($vid,$sid) {
 }
 
 function add_clip($vid,$sid) {
+	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
 	$con = con();
 	$video = get_video($vid,$sid);
 	$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`)
 		VALUES ("'.$vid.'","'.$video['title'].'","'.$video['desc'].'",'.$sid.')';
 	$result = mysql_query($query);
-	while($row = mysql_fetch_assoc($result)) {
-		$return = $row;
-	}
+	$query = 'INSERT INTO c_cid_uid (`cid`,`uid`)
+		VALUES ("'.get_cid($vid).'",1)';
+	$result = mysql_query($query);
 	discon($con);
-	return $return;
+	return $result;
 }
 
 ?>
