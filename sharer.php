@@ -4,8 +4,9 @@ $u = $_GET['u'];
 $t = $_GET['t'];
 include 'templates/layout.php';
 
-startblock('content'); ?>
+startblock('title'); echo $t; endblock();
 
+startblock('content'); ?>
 <div id="sharer">
     <label for="new_url">New URL</label>
     <input id="new_url" name="url" type="text" value="<?php echo $u; ?>" />
@@ -13,7 +14,6 @@ startblock('content'); ?>
         hello
     </div>
 </div>
-
 <?php endblock();
 
 startblock('scriptTag'); ?>

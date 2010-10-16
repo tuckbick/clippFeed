@@ -78,6 +78,7 @@ button {  width: auto; overflow: visible; }
 
 body {
 	background-color:#FFEEEE;
+	background-image:url(../assets/bg.jpg);
 }
 
 #new_url_preview {
