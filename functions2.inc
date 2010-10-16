@@ -6,12 +6,19 @@ function youtube($url) {
                 $replace = array("watch?v=", "v/", "vi/");
                 $match = str_replace($replace, "", $match);
         }
+        $data = file_get_contents('http://gdata.youtube.com/feeds/videos/'.$match.'?alt=json');
+        if( $data == 'Invalid id' ) {
+            return 0;
+        }
         return $match;
 }
 function vimeo($url) {
-    //    /http:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/
         if (preg_match('%vimeo\\.com/(.+)%', $url, $match)) {
                 $match = $match[1];
+        }
+        $data = file_get_contents('http://vimeo.com/api/v2/video/'.$match.'.json');
+        if( $data == '[]' ) {
+            return 0;
         }
         return $match;
 }

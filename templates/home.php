@@ -41,7 +41,10 @@ startblock('readyScript'); ?>
                     action: 'preview',
                     sid: type,
                     url: url
-                })
+                },
+                function( data ) {
+                    log( data );
+                });
             });
         } else {
             $preview.slideUp( 'fast' );
