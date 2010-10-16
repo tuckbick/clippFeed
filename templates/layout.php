@@ -1,4 +1,9 @@
 <?php
+// Awesome Facebook Application
+// 
+// Name: clippFeed
+// 
+
 
 ini_set('display_errors', 1);
 ini_set('log_errors', 1);
@@ -10,8 +15,16 @@ header('Expires: '.gmdate("D, d M Y H:i:s", time() + 604800 ).' GMT');
 
 // gzip
 if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start();
-
 require_once '../ti.php';
+require_once 'facebook-php-sdk/src/facebook.php';
+
+// Create our Application instance.
+$facebook = new Facebook(array(
+  'appId'  => '148596221850855',
+  'secret' => '25ba671ee41108618fe7b6003e132688',
+  'cookie' => true,
+));
+
 blockbase();
 /*
 $pages = array ( 
