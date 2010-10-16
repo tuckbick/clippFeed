@@ -5,7 +5,7 @@ startblock('content'); ?>
 
 <div id="home">
     <label for="new_url">New URL</label>
-    <input id="new_url" name="url" type="text" />
+    <input id="new_url" name="url" type="text" value="Video URL" />
     <div id="new_url_preview">
         hello
     </div>
@@ -16,9 +16,9 @@ startblock('content'); ?>
 startblock('readyScript'); ?>
 
     var exps = [
-        /^http:\/\/(?:www\.)?youtube.com\/watch\?(?=.*v=\w+)(?:\S+)?/,
-        /^http:\/\/(?:www\.)?vimeo.com(\/|\/clip:)(\d+)(.*?)/,
-        /^http:\/\/(?:www\.)?video.yahoo.com\/watch\/(.*?)/
+        /youtube.com\/watch\?(?=.*v=\w+)(?:\S+)+/,
+        /vimeo.com(\/|\/clip:)(\d+)(.*?)/,
+        /video.yahoo.com\/watch\/(.*?)/
         //http://video.google.it/videoplay?docid=3947293349740494460
         ///http:\/\/(www.vimeo|vimeo)\.com(\/|\/clip:)(\d+)(.*?)/,
         //http://purinaanimalallstars.yahoo.com/?v=8380138
@@ -26,28 +26,34 @@ startblock('readyScript'); ?>
     ],
     validate = function( url ) {
         for( var i in exps ) {
-            if (url.match(exps[i][0])) return i;
+            if (url.match(exps[i])) return i;
         }
         return -1;
     },
     $url = $('#new_url'),
-    $preview = $('#new_url_preview');
+    $preview = $('#new_url_preview'),
+    lastTime = 0;
     $url.bind('keyup paste', function(e) {
-        var url = $url.val(),
-            type = validate( url );
-        if( type != -1 ) {
-            $preview.slideDown( 'fast', function() {
-                $.getJSON('handler.php', {
-                    action: 'preview',
-                    sid: type,
-                    url: url
-                },
-                function( data ) {
-                    log( data );
-                });
-            });
-        } else {
-            $preview.slideUp( 'fast' );
+        var newTime = (new Date()).getTime();
+        if( newTime - lastTime > 500 ) {
+            lastTime = newTime;
+            var finish = function() {                
+                var url = $url.val(),
+                    type = validate( url );
+                if( type != -1 ) {
+                    $.getJSON('handler.php', {
+                        action: 'preview',
+                        sid: type,
+                        url: url
+                    },
+                    function( data ) {
+                        if( data.hasOwnProperty('embed') ) {
+                            $preview.html(data.embed);
+                        }
+                    });
+                }
+            }
+            setTimeout(finish,50);
         }
     });
 

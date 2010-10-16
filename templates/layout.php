@@ -16,7 +16,7 @@ header('Expires: '.gmdate("D, d M Y H:i:s", time() + 604800 ).' GMT');
 // gzip
 if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start();
 require_once '../ti.php';
-require_once '../facebook-php-sdk/src/facebook.php';
+require_once '../apis/facebook-php-sdk/src/facebook.php';
 
 // Create our Application instance.
 $facebook = new Facebook(array(
