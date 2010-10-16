@@ -1,0 +1,6 @@
+[15-Oct-2010 21:17:06] PHP Fatal error:  Uncaught exception 'Exception' with message 'Facebook needs the JSON PHP extension.' in /Users/fastfrwrd/Documents/Sites/clippFeed/facebook-php-sdk/src/facebook.php:7
+Stack trace:
+#0 /Users/fastfrwrd/Documents/Sites/clippFeed/templates/layout.php(19): require_once()
+#1 /Users/fastfrwrd/Documents/Sites/clippFeed/templates/home.php(2): include('/Users/fastfrwr...')
+#2 {main}
+  thrown in /Users/fastfrwrd/Documents/Sites/clippFeed/facebook-php-sdk/src/facebook.php on line 7

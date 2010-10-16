@@ -1,15 +1,12 @@
 <?php
 
 include_once "connect.php";
+include_once "functions.inc";
 
-echo "hello world!<br />";
-$con = con();
-$query = "SELECT * FROM `c_servs`";
-$result = mysql_query($query);
-while($row = mysql_fetch_assoc($result)) {
-	echo $row['serv_name']."<br />";
-}
-
-
+echo get_feed();
+$video = get_clip(1);
+echo get_embed($video['vid'],$video['sid']);
+$video = get_clip(2);
+echo get_embed($video['vid'],$video['sid']);
 
 ?>
