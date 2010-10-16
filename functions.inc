@@ -8,17 +8,24 @@ require_once 'Zend/Loader.php';
 Zend_Loader::loadClass('Zend_Gdata_YouTube');
 
 function get_feed($order="c_clips.c_title ASC") {
-	$cookies['uid'] = 1;
-	$con = con();
-	$query = 'SELECT * FROM c_cid_uid
-		INNER JOIN c_clips ON c_cid_uid.cid = c_clips.cid
-		INNER JOIN c_servs ON c_clips.sid = c_servs.sid 
-		WHERE c_cid_uid.uid = '.$cookies['uid'].' ORDER BY '.$order;
-	$result = mysql_query($query);
-	while($row = mysql_fetch_assoc($result)) {
-		$return[$row['cid']] = $row;
+	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
+	if(isset($cookies['uid'])) {
+		$con = con();
+		$query = 'SELECT * FROM c_cid_uid
+			INNER JOIN c_clips ON c_cid_uid.cid = c_clips.cid
+			INNER JOIN c_servs ON c_clips.sid = c_servs.sid 
+			WHERE c_cid_uid.uid = '.$cookies['uid'].' ORDER BY '.$order;
+		$result = mysql_query($query);
+		while($row = mysql_fetch_assoc($result)) {
+			$return[$row['cid']] = $row;
+		}
+		if(sizeof($return)==0) {
+			$return[0] = "You haven't bookmarked any videos yet. You should add a video by using the form on the right or by using our awesome bookmarklet.";
+		}
+		discon($con);
+	} else {
+		$return = "unauthenticated user";
 	}
-	discon($con);
 	return $return;
 }
 
@@ -78,25 +85,23 @@ function get_video($vid,$sid) {
 }
 
 function add_clip($vid,$sid) {
-	//$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
-	//if(isset($cookies['uid'])) {
-		$cookies['uid'] = 1;
+	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
+	if(isset($cookies['uid'])) {
 		$con = con();
 		$video = get_video($vid,$sid);
 		$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`) VALUES ("'.$vid.'","'.$video['title'].'","'.$video['desc'].'",'.$sid.')'; 
 		$result = mysql_query($query);
 		discon($con);
 		if($result) {
-			add_assoc_uid($vid);
+			add_assoc_uid($vid,$cookies);
 		}
-	/*} else {
+	} else {
 		$result = "unauthenticated user";
-	}*/
+	}
 	return $result;
 }
 
-function add_assoc_uid($vid) {
-	$cookies['uid'] = 1;
+function add_assoc_uid($vid,$cookies) {
 	$cid = get_cid($vid);
 	$con = con();
 	$query = 'INSERT INTO c_cid_uid (`cid`,`uid`) VALUES ('.$cid.','.$cookies['uid'].');';
