@@ -45,6 +45,15 @@ updatePreview = function() {
 		});
 	}
 };
+$.ajax({
+    url:'handler.php',
+    dataType:'json',
+    cache:'false',
+    data: {},
+    success: function(){
+        
+    }
+});
 $url.focus(function() {
 	if($url.val()=='paste a URL of a video and click add') {
 		$url.val('');
@@ -60,8 +69,9 @@ $url.bind('keyup paste', function(e) {
 });
 
 $form.submit(function() {
-  var url = $url.val(),
+    var url = $url.val(),
 		type = validate( url );
+	$preview.html('<img src="/assets/loading.gif" title="loading..." />');
 	$.ajax({
 		url:'handler.php',
 		dataType:'json',
@@ -73,7 +83,7 @@ $form.submit(function() {
 		},
 		success: function( data ) {
 			$url.val('');
-            $preview.html('').delay(20).slideUp('fast');
+            $preview.html('<img src="/assets/done.png" title="done!" />').delay(2000).slideUp('fast');
 		}
 	});
 	return false;
