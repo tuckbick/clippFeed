@@ -45,13 +45,16 @@ updatePreview = function() {
 		});
 	}
 };
+var uid;
 $.ajax({
     url:'handler.php',
     dataType:'json',
     cache:'false',
-    data: {},
-    success: function(){
-        
+    data: {
+        action: 'getUID'
+    },
+    success: function(data){
+        uid = data.uid;
     }
 });
 $url.focus(function() {
@@ -71,7 +74,7 @@ $url.bind('keyup paste', function(e) {
 $form.submit(function() {
     var url = $url.val(),
 		type = validate( url );
-	$preview.html('<img src="/assets/loading.gif" title="loading..." />');
+	$preview.html('<img src="assets/loading.gif" title="loading..." />');
 	$.ajax({
 		url:'handler.php',
 		dataType:'json',
@@ -79,11 +82,12 @@ $form.submit(function() {
 		data: {
 			action: 'add',
 			sid: type,
-			url: url
+			url: url,
+			uid: uid
 		},
 		success: function( data ) {
 			$url.val('');
-            $preview.html('<img src="/assets/done.png" title="done!" />').delay(2000).slideUp('fast');
+            $preview.html('<img src="assets/done.png" title="done!" />').delay(2000).slideUp('fast');
 		}
 	});
 	return false;

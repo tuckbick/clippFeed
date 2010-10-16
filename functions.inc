@@ -7,14 +7,12 @@ $oldPath = set_include_path(get_include_path() . PATH_SEPARATOR . $clientLibrary
 require_once 'Zend/Loader.php';
 Zend_Loader::loadClass('Zend_Gdata_YouTube');
 
-function get_feed($uid, $order="c_clips.c_title ASC") {
-	if($uid==0) {
+function get_feed($uid=0,$order="c_clips.c_title ASC") {
+	if($uid = 0) {
 		$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
-	} else {
-		$cookies['uid'] = $uid;
+		$uid = $cookies['uid'];
 	}
-	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
-	if($cookies) {
+	if($uid!=0) {
 		$con = con();
 		$query = 'SELECT * FROM c_cid_uid
 			INNER JOIN c_clips ON c_cid_uid.cid = c_clips.cid
@@ -25,11 +23,11 @@ function get_feed($uid, $order="c_clips.c_title ASC") {
 			$return[$row['cid']] = $row;
 		}
 		if(sizeof($return)==0) {
-			$return = $cookies['uid'];
+			$return = null;
 		}
 		discon($con);
 	} else {
-		$return = "unauthenticated user";
+		$return = null;
 	}
 	return $return;
 }
@@ -89,14 +87,19 @@ function get_video($vid,$sid) {
 	return $video;
 }
 
-function add_clip($vid,$sid,$uid) {
-	$con = con();
-	$video = get_video($vid,$sid);
-	$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`) VALUES ("'.$vid.'","'.$video['title'].'","'.$video['desc'].'",'.$sid.')'; 
-	$result = mysql_query($query);
-	discon($con);
-	if($result) {
-		add_assoc_uid($vid,$cookies);
+function add_clip($vid,$sid) {
+	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
+	if($cookies) {
+		$con = con();
+		$video = get_video($vid,$sid);
+		$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`) VALUES ("'.$vid.'","'.$video['title'].'","'.$video['desc'].'",'.$sid.')'; 
+		$result = mysql_query($query);
+		discon($con);
+		if($result) {
+			add_assoc_uid($vid,$cookies);
+		}
+	} else {
+		$result = false;
 	}
 	return $result;
 }

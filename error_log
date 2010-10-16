@@ -25,3 +25,6 @@
 [16-Oct-2010 04:38:36] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'paulma6'@'biz88.inmotionhosting.com' (using password: YES) in /home/paulma6/public_html/projects/clippfeed/connect.php on line 10
 [16-Oct-2010 05:43:38] PHP Warning:  mysql_fetch_assoc(): supplied argument is not a valid MySQL result resource in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 19
 [16-Oct-2010 05:49:58] PHP Warning:  mysql_fetch_assoc(): supplied argument is not a valid MySQL result resource in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 19
+[16-Oct-2010 06:50:41] PHP Warning:  Missing argument 3 for add_clip(), called in /home/paulma6/public_html/projects/clippfeed/handler.php on line 22 and defined in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 92
+[16-Oct-2010 06:52:10] PHP Warning:  Missing argument 3 for add_clip(), called in /home/paulma6/public_html/projects/clippfeed/handler.php on line 22 and defined in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 92
+[16-Oct-2010 07:16:58] PHP Parse error:  syntax error, unexpected '<' in /home/paulma6/public_html/projects/clippfeed/sharer.php on line 9

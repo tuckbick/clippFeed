@@ -25,7 +25,7 @@ switch($_GET['action']) {
 		}
 		break;
 	case "getFeed":
-		$return = get_feed($_GET['uid']);
+		$return = get_feed();
 		break;
 	case "getUID":
 		$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
