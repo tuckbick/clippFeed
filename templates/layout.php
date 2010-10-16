@@ -49,9 +49,8 @@ function nav ( $current = 'blog' ) {
 }
 */
 
-if(isset($_COOKIE['fbs_148596221850855'])) {
-	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
-}
+
+$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
 
 ?>
 <!doctype html>
@@ -61,7 +60,7 @@ if(isset($_COOKIE['fbs_148596221850855'])) {
   <!--[if IE]><![endif]-->
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>clippFeed - <?php emptyblock('title') ?></title>
+  <title>clippFeed<?php emptyblock('title') ?></title>
   <meta name="description" content="">
   <meta name="author" content="">
   <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
@@ -81,7 +80,7 @@ if(isset($_COOKIE['fbs_148596221850855'])) {
   <div id="container">
     <header>
     	<div id="login" style="float:right;">
-        <?php if (isset($cookies)) { ?>
+        <?php if ($cookies) { ?>
       	<span style="padding:10px;">Logged in as <fb:name uid="<?php echo $cookies['uid']; ?>" useyou="false"></fb:name></span><fb:profile-pic uid="<?php echo $cookies['uid']; ?>" size="q"></fb:profile-pic>
    		<?php } else { ?>
       	<fb:login-button></fb:login-button>
@@ -108,32 +107,8 @@ if(isset($_COOKIE['fbs_148596221850855'])) {
   <script>
   	  $login = $('#login');
       FB.init({appId: '148596221850855', status: true, cookie: true, xfbml: true});
-      FB.Event.subscribe('auth.sessionChange', function(response) {
-        if (response.session) {
-          $.ajax({
-				url: 'handler.php',
-				dataType: 'json',
-				cache: false,
-				data: {
-					action: 'getUID',
-				},
-				success: function( data ) {
-					$login.html('<span style="padding:10px;">Logged in as <fb:name uid="data.uid" useyou="false"></fb:name></span><fb:profile-pic uid="data.uid" size="q"></fb:profile-pic>');
-				}
-				});
-        } else {
-        	 $.ajax({
-				url: 'handler.php',
-				dataType: 'json',
-				cache: false,
-				data: {
-					action: 'end_session',
-				},
-				success: function( data ) {
-					$login.html('<fb:login-button></fb:login-button>');
-				}
-				});
-        }
+      FB.Event.subscribe('auth.login', function(response) {
+        window.location.reload();
       });
   </script>
   <?php emptyblock('scriptTag') ?>

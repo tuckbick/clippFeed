@@ -15,6 +15,7 @@ validate = function( url ) {
 },
 $url = $('#new_url'),
 $preview = $('#new_url_preview'),
+$form = $('#add_clip'),
 lastTime = 0;
 $url.bind('keyup paste', function(e) {
     var newTime = (new Date()).getTime();
@@ -50,4 +51,23 @@ $url.bind('keyup paste', function(e) {
         }
         setTimeout(finish,50);
     }
+});
+
+$form.submit(function() {
+  var url = $url.val(),
+		type = validate( url );
+	$.ajax({
+		url:'handler.php',
+		dataType:'json',
+		cache:'false',
+		data: {
+			action: 'add',
+			sid: type,
+			url: url
+		},
+		success: function( data ) {
+			//populate list again
+		}
+	});
+	return false;
 });
