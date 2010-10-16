@@ -2,7 +2,7 @@
 		function con(){
 
 		//Connect To Database
-		$hostname='localhost';
+		$hostname='66.117.14.32';
 		$username='paulma6';
 		$password='2011pjm!';
 		$dbname='paulma6_portfolio';
