@@ -8,7 +8,7 @@ require_once 'Zend/Loader.php';
 Zend_Loader::loadClass('Zend_Gdata_YouTube');
 
 function get_feed($uid=0,$order="c_clips.c_title ASC") {
-	if($uid = 0) {
+	if($uid == 0) {
 		$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
 		$uid = $cookies['uid'];
 	}

@@ -35,6 +35,14 @@ switch($_GET['action']) {
 			$return['uid'] = 0;
 		}
 		break;
+	case "getClipEmbed":
+		if(isset($_GET['cid'])) {
+			$c = get_clip($_GET['cid']);
+			$return['embed'] = get_embed($c['s_url'].$c['vid'],$c['sid'],600,450);
+		} else {
+			$return['embed'] = "<p>Please select a valid video!</p>";
+		}
+		break;
 	default:
 		$return = "";
 		break;

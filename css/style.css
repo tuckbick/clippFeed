@@ -130,6 +130,10 @@ body {
 	padding-left:23em;
 }
 
+#clip_embed {
+	margin-top:1em;
+}
+
 #main {
 	padding:1em;
 	background-color:#3D8FC3;

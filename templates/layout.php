@@ -104,6 +104,7 @@ $cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e1326
   <script src="js/jquery-effects-core.min.js"></script>
   <script src="js/plugins.js?v=1"></script>
   <script src="js/script.js?v=1"></script>
+  <script src="js/getvideo.js?v=1"></script>
   <script src="http://connect.facebook.net/en_US/all.js"></script>
   <script>
   	  $login = $('#login');

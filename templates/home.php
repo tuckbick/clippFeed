@@ -24,6 +24,7 @@ startblock('content');
             <input type="submit" id="add_submit" value="Add" />
         </form>
         <div id="new_url_preview"></div>
+        <div id="clip_embed"></div>
     </div>
 </div>
 
