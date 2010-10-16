@@ -53,7 +53,7 @@ function get_embed($url,$sid,$width,$height) {
 
 function get_cid($vid) {
 	$con = con();
-	$query = 'SELECT * FROM c_clips WHERE vid="'.$vid.'" LIMIT 1';
+	$query = 'SELECT * FROM `c_clips` WHERE vid="'.$vid.'" LIMIT 1';
 	$result = mysql_query($query);
 	while($row = mysql_fetch_assoc($result)) {
 		$return = $row['cid'];
@@ -80,27 +80,41 @@ function get_video($vid,$sid) {
 		case 0:
 			$yt = new Zend_Gdata_YouTube();
 			$v_obj = $yt->getVideoEntry($vid);
-			$video['title'] = $v_obj->getVideoTitle();
-			$video['desc'] = $v_obj->getVideoDescription();
+			$video['title'] = addslashes($v_obj->getVideoTitle());
+			$video['desc'] = addslashes($v_obj->getVideoDescription());
 			break;
 		case 1:
 			$video = unserialize(file_get_contents("http://vimeo.com/api/v2/video/".$vid.".php"));
-			$video['desc'] = $video['video_description'];
-			$video['title'] = $video['video_title'];
+			$video['desc'] = addslashes($video['video_description']);
+			$video['title'] = addslashes($video['video_title']);
 			break;
 	}
 	return $video;
 }
 
 function add_clip($vid,$sid) {
-	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
+	//$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
+	//if(isset($cookies['uid'])) {
+		$cookies['uid'] = 1;
+		$con = con();
+		$video = get_video($vid,$sid);
+		$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`) VALUES ("'.$vid.'","'.$video['title'].'","'.$video['desc'].'",'.$sid.')'; 
+		$result = mysql_query($query);
+		discon($con);
+		if($result) {
+			add_assoc_uid($vid);
+		}
+	/*} else {
+		$result = "unauthenticated user";
+	}*/
+	return $result;
+}
+
+function add_assoc_uid($vid) {
+	$cookies['uid'] = 1;
+	$cid = get_cid($vid);
 	$con = con();
-	$video = get_video($vid,$sid);
-	$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`)
-		VALUES ("'.$vid.'","'.$video['title'].'","'.$video['desc'].'",'.$sid.')';
-	$result = mysql_query($query);
-	$query = 'INSERT INTO c_cid_uid (`cid`,`uid`)
-		VALUES ("'.get_cid($vid).'",1)';
+	$query = 'INSERT INTO c_cid_uid (`cid`,`uid`) VALUES ('.$cid.','.$cookies['uid'].');';
 	$result = mysql_query($query);
 	discon($con);
 	return $result;

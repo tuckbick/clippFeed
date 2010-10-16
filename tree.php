@@ -12,6 +12,6 @@ echo get_embed($video2['s_url'].$video2['vid'],$video2['sid'],300,225);
 
 print_r(get_video($video['vid'],$video['sid']));
 
-
+echo get_cid("Q97c5szTgIA");
 
 ?>
