@@ -15,10 +15,11 @@ $t = $_GET['t'];
 
 <div id="sharer">
     <label for="new_url">New URL</label>
-    <input id="new_url" name="url" type="text" value="<?php echo $u; ?>" />
-    <div id="new_url_preview">
-        hello
-    </div>
+    <form id="add_clip">
+        <input id="new_url" name="url" type="text" value="<?php echo $u; ?>" />
+        <input type="submit" id="add_submit" value="Add" />
+    </form>
+    <div id="new_url_preview"></div>
 </div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>

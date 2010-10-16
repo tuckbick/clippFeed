@@ -90,7 +90,7 @@ $cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e1326
     </header>
     
     <div id="main">
-        <?php startblock('content') ?>page left intentionally blank<?php endblock() ?>
+        <?php emptyblock('content') ?>
     </div>
     
     <footer>
