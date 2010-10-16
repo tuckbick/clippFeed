@@ -93,6 +93,11 @@ body {
 #container {
 	width:960px;
 	margin: 2em auto;
+	display:relative;
+}
+
+#bookmarklet {
+	position:absolute;
 }
 
 #main {
@@ -116,6 +121,7 @@ header {
 }
 h1 {
 	font-size:3em;
+	width: 5em;
 }
 
 

@@ -7,9 +7,14 @@ $oldPath = set_include_path(get_include_path() . PATH_SEPARATOR . $clientLibrary
 require_once 'Zend/Loader.php';
 Zend_Loader::loadClass('Zend_Gdata_YouTube');
 
-function get_feed($order="c_clips.c_title ASC") {
+function get_feed($uid, $order="c_clips.c_title ASC") {
+	if($uid==0) {
+		$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
+	} else {
+		$cookies['uid'] = $uid;
+	}
 	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
-	if(isset($cookies['uid'])) {
+	if($cookies) {
 		$con = con();
 		$query = 'SELECT * FROM c_cid_uid
 			INNER JOIN c_clips ON c_cid_uid.cid = c_clips.cid
@@ -20,7 +25,7 @@ function get_feed($order="c_clips.c_title ASC") {
 			$return[$row['cid']] = $row;
 		}
 		if(sizeof($return)==0) {
-			$return[0] = "You haven't bookmarked any videos yet. You should add a video by using the form on the right or by using our awesome bookmarklet.";
+			$return = $cookies['uid'];
 		}
 		discon($con);
 	} else {
@@ -76,9 +81,9 @@ function get_video($vid,$sid) {
 			$video['desc'] = addslashes($v_obj->getVideoDescription());
 			break;
 		case 1:
-			$video = unserialize(file_get_contents("http://vimeo.com/api/v2/video/".$vid.".php"));
-			$video['desc'] = addslashes($video['video_description']);
-			$video['title'] = addslashes($video['video_title']);
+			$vim = unserialize(file_get_contents("http://vimeo.com/api/v2/video/".$vid.".php"));
+			$video['desc'] = addslashes($vim[0]['description']);
+			$video['title'] = addslashes($vim[0]['title']);
 			break;
 	}
 	return $video;

@@ -14,8 +14,8 @@ $t = $_GET['t'];
 <body>
 
 <div id="sharer">
-    <label for="new_url">New URL</label>
     <form id="add_clip">
+        <label for="new_url">New URL</label>
         <input id="new_url" name="url" type="text" value="<?php echo $u; ?>" />
         <input type="submit" id="add_submit" value="Add" />
     </form>

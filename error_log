@@ -1,0 +1,27 @@
+[16-Oct-2010 01:49:19] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 29
+[16-Oct-2010 01:49:20] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 29
+[16-Oct-2010 01:49:20] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 29
+[16-Oct-2010 01:49:21] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 29
+[16-Oct-2010 01:49:23] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 29
+[16-Oct-2010 01:49:57] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 29
+[16-Oct-2010 01:49:59] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 29
+[16-Oct-2010 01:50:18] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 29
+[16-Oct-2010 01:53:43] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 29
+[16-Oct-2010 01:53:47] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 29
+[16-Oct-2010 01:54:07] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 29
+[16-Oct-2010 01:55:37] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 29
+[16-Oct-2010 01:56:11] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 29
+[16-Oct-2010 03:44:27] PHP Warning:  require_once(tiphp) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /home/paulma6/public_html/projects/clippfeed/sharer.php on line 3
+[16-Oct-2010 03:44:27] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'tiphp' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/paulma6/public_html/projects/clippfeed/sharer.php on line 3
+[16-Oct-2010 04:03:56] PHP Fatal error:  Call to undefined function  startblock() in /home/paulma6/public_html/projects/clippfeed/sharer.php on line 17
+[16-Oct-2010 04:05:17] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'paulma6'@'biz88.inmotionhosting.com' (using password: YES) in /home/paulma6/public_html/projects/clippfeed/connect.php on line 10
+[16-Oct-2010 04:08:15] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'paulma6'@'biz88.inmotionhosting.com' (using password: YES) in /home/paulma6/public_html/projects/clippfeed/connect.php on line 10
+[16-Oct-2010 04:13:46] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'paulma6'@'biz88.inmotionhosting.com' (using password: YES) in /home/paulma6/public_html/projects/clippfeed/connect.php on line 10
+[16-Oct-2010 04:13:49] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'paulma6'@'biz88.inmotionhosting.com' (using password: YES) in /home/paulma6/public_html/projects/clippfeed/connect.php on line 10
+[16-Oct-2010 04:14:44] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'paulma6'@'biz88.inmotionhosting.com' (using password: YES) in /home/paulma6/public_html/projects/clippfeed/connect.php on line 10
+[16-Oct-2010 04:18:19] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'paulma6'@'biz88.inmotionhosting.com' (using password: YES) in /home/paulma6/public_html/projects/clippfeed/connect.php on line 10
+[16-Oct-2010 04:37:17] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'paulma6'@'biz88.inmotionhosting.com' (using password: YES) in /home/paulma6/public_html/projects/clippfeed/connect.php on line 10
+[16-Oct-2010 04:37:42] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'paulma6'@'biz88.inmotionhosting.com' (using password: YES) in /home/paulma6/public_html/projects/clippfeed/connect.php on line 10
+[16-Oct-2010 04:38:36] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'paulma6'@'biz88.inmotionhosting.com' (using password: YES) in /home/paulma6/public_html/projects/clippfeed/connect.php on line 10
+[16-Oct-2010 05:43:38] PHP Warning:  mysql_fetch_assoc(): supplied argument is not a valid MySQL result resource in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 19
+[16-Oct-2010 05:49:58] PHP Warning:  mysql_fetch_assoc(): supplied argument is not a valid MySQL result resource in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 19
