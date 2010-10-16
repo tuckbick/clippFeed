@@ -41,14 +41,26 @@ startblock('readyScript'); ?>
                 var url = $url.val(),
                     type = validate( url );
                 if( type != -1 ) {
-                    $.getJSON('handler.php', {
-                        action: 'preview',
-                        sid: type,
-                        url: url
-                    },
-                    function( data ) {
-                        if( data.hasOwnProperty('embed') ) {
-                            $preview.html(data.embed);
+                    $.ajax({
+                        url: 'handler.php',
+                        dataType: 'json',
+                        cache: false,
+                        data: {
+                            action: 'preview',
+                            sid: type,
+                            url: url
+                        },
+                        success: function( data ) {
+                            if( data.hasOwnProperty('embed') ) {
+                                if( data.embed != '' ) {
+                                    $preview.slideDown('fast', function(){$preview.html(data.embed);})
+                                } else {
+                                    $preview.html('').delay(20).slideUp('fast');
+                                }
+                            }
+                        },
+                        error: function( ) {
+                            $preview.html('').slideUp('fast');
                         }
                     });
                 }

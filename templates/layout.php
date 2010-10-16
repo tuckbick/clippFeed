@@ -74,7 +74,7 @@ function nav ( $current = 'blog' ) {
 
   <div id="container">
     <header>
-
+        <h1>clippFeed</h1>
     </header>
     
     <div id="main">

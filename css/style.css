@@ -76,14 +76,30 @@ button {  width: auto; overflow: visible; }
     Author: 
  */
 
+body {
+	background-color:#FFEEEE;
+}
 
 #new_url_preview {
+	display:none;
 	background-color:#0000FF;
 	width:400px;
 	height:400px;
 }
 
+#container {
+	width:960px;
+	margin:0 auto;
+	background-color:#3D8FC3;
+	min-height:640px;
+}
 
+header {
+	
+}
+h1 {
+	font-size:2em;
+}
 
 
 

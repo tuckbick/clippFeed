@@ -7,7 +7,7 @@ function youtube($url) {
                 $match = str_replace($replace, "", $match);
         }
         $data = file_get_contents('http://gdata.youtube.com/feeds/videos/'.$match.'?alt=json');
-        if( $data == 'Invalid id' ) {
+        if( !$data || $data == 'Invalid id' ) {
             return '0';
         }
         return $match;
@@ -17,7 +17,7 @@ function vimeo($url) {
                 $match = $match[1];
         }
         $data = file_get_contents('http://vimeo.com/api/v2/video/'.$match.'.json');
-        if( $data == '[]' ) {
+        if( !$data || $data == '[]' ) {
             return '0';
         }
         return $match;
