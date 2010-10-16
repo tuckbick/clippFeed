@@ -102,12 +102,32 @@ body {
 	position:absolute;
 }
 
+#side_area {
+	float:left;
+	width:150px;
+	margin-right:5px;
+}
+
+#search {
+	background-color:#fff;
+	border: 0px;
+	height: 2em;
+	margin: 0px 0.8em 0px 0px;
+	margin-right: 0.8em;
+	padding: 0.2em 0.6em;
+	width: 21em;
+}
+
 #left_bar {
-	float:left; background-color:#fff; height:48em; width:150px; margin-right:5px; padding:10px;
+	background-color:#fff;
+	height:42em;
+	padding:2em;
+	width: 17.85em;
+	margin-top: 1em;
 }
 
 #middle {
-	padding-left:14em;
+	padding-left:23em;
 }
 
 #main {
@@ -125,7 +145,7 @@ body {
 	margin: 0px 0.8em 0px 0px;
 	margin-right: 0.8em;
 	padding: 0.2em 0.6em;
-	width: 51.2em;
+	width: 42.1em;
 }
 
 #add_submit {
