@@ -8,7 +8,7 @@ $result = "<p>No result.</p>";
 switch($_GET['action']) {
 	case "preview":
 		if(isset($_GET['vid'])&&isset($_GET['sid'])) {
-			$result = get_embed($_GET['vid'],$_GET['sid']);
+			$result = get_embed($_GET['vid'],$_GET['sid'],300,225);
 		} else {
 			$result = "<p>please send me a video link!</p>";
 		}
