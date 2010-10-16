@@ -31,16 +31,15 @@ function get_feed($order="c_clips.c_title ASC") {
 	return json_encode($return);
 }
 
-function get_embed($vid,$sid) {
+function get_embed($url,$sid,$vid=-1,$width=300,$height=225) {
 	$return = '';
 	switch($sid) {
 		case 0:
-			$return .= '<object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/'.$vid.'?fs=1&amp;hl=en_US"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/'.$vid.'?fs=1&amp;hl=en_US" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed></object>';
+			$return .= '<object width="'.$width.'" height="'.$width.'"><param name="movie" value="http://www.youtube.com/v/'.$vid.'?fs=1&amp;hl=en_US"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/'.$vid.'?fs=1&amp;hl=en_US" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="'.$width.'" height="'.$height.'"></embed></object>';
 			break;
 		case 1:
-			$video = unserialize(file_get_contents("http://vimeo.com/api/v2/video/".$vid.".php"));
-			$video = $video[0];
-			$return .= '<iframe src="http://player.vimeo.com/video/'.$vid.'?color=ffffff" width="'.$video['width'].'" height="'.$video['height'].'" frameborder="0"></iframe><p><a href="'.$video['url'].'">';
+			$vid = extract_vid($url);
+			$return .= '<iframe src="http://player.vimeo.com/video/'.$vid.'?color=ffffff" width="'.$width.'" height="'.$height.'" frameborder="0"></iframe>';
 			break;
 	}
 	return $return;
@@ -55,6 +54,10 @@ function get_clip($cid) {
 	}
 	discon($con);
 	return $return;
+}
+
+add_clip($vid,$sid) {
+
 }
 
 ?>
