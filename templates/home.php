@@ -42,8 +42,7 @@ startblock('scriptTag'); ?>
 <?php endblock(); 
 
 startblock('readyScript'); ?>
-	populateFeed();
-    
+    populateFeed("ORDER BY c_clips.c_ts_added DESC",0);
 <?php
 endblock();
 ?>

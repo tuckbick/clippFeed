@@ -8,6 +8,7 @@ include_once "functions2.inc";
 include_once "fb_funcs.php";
 
 $result = "";
+
 $cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
 
 switch($_GET['action']) {
@@ -42,7 +43,12 @@ switch($_GET['action']) {
 		}
 		break;
 	case "getFeed":
-		$return = get_feed($cookies);
+		if($cookies && isset($_GET['arg']) && isset($_GET['page'])) {
+			$return = get_feed($cookies,$_GET['arg'],$_GET['page']);
+		} else {
+			print_r();
+			$return[0] = "You don't seem to have any results.";
+		}
 		break;
 	case "getClipEmbed":
 		if(isset($_GET['cid'])) {

@@ -25,6 +25,13 @@ $clipembed = $('#clip_embed'),
 lastURLTime = 0,
 lastSearchTime = 0,
 _cid = 0,
+function stopEvent(e) {
+    if (e.stopPropagation) e.stopPropagation();
+    else e.cancelBubble = true;
+
+    if (e.preventDefault) e.preventDefault();
+    else e.returnValue = false;
+}
 SupdatePreview = function() {
 	var url = $url.val();
 	if( url && url != '' ) {
@@ -93,29 +100,35 @@ updatePreview = function() {
 	}
 },
 search = function() {
-    var q = $search.val();
-    if( q ) {
-        $.ajax({
-            url: 'handler.php',
-            dataType: 'json',
-            cache: true,
-            data: {
-                action: 'search',
-                term: q
-            },
-            success: function( data ) {
-                var ret = ['<h3>My Videos</h3><ul>'];
-                for(var i in data) {
-                    ret.push( '<li><a href="javascript:getVideo('+ data[i].cid +')">'+ data[i].c_title +'</a><span class="source">'+ data[i].serv_name +'</span></li>' );
-                }
-                ret.push( '<ul>' );
-                $leftbar.html(ret.join(''));
-            },
-            error: function( ) {
-
-            }
-        });
-    }
+	FB.getLoginStatus(function(response) {
+  		if (response.session) {
+			var q = $search.val();
+			if( q ) {
+				$.ajax({
+					url: 'handler.php',
+					dataType: 'json',
+					cache: true,
+					data: {
+						action: 'search',
+						term: q
+					},
+					success: function( data ) {
+						var ret = ['<h3>My Videos</h3><ul>'];
+						for(var i in data) {
+							ret.push( '<li><a href="javascript:getVideo('+ data[i].cid +')">'+ data[i].c_title +'</a><span class="source">'+ data[i].serv_name +'</span></li>' );
+						}
+						ret.push( '<ul>' );
+						$leftbar.html(ret.join(''));
+					},
+					error: function( ) {
+		
+					}
+				});
+			}
+		} else {
+			//what to do when not logged in
+		}
+	});
 };
 updatePreview();
 SupdatePreview();
@@ -147,51 +160,80 @@ $url.bind('keyup paste', function(e) {
     }
 });
 $search.bind('keyup paste', function(e) {
-    var newTime = (new Date()).getTime();
-    if( newTime - lastSearchTime > 500 ) {
-        lastSearchTime = newTime;
-        setTimeout(search,50);
-    }
-});
-$add.submit(function() {
-    var url = $url.val(),
-		type = validate( url );
-	$preview.hide().html('<img class="loading" src="assets/loading.gif" title="loading..." />').fadeIn('fast');
-	$.ajax({
-		url:'handler.php',
-		dataType:'json',
-		cache:'false',
-		data: {
-			action: 'add',
-			sid: type,
-			url: url
-		},
-		success: function( data ) {
-			$url.val('');
-            $preview.html('<img class="loading" src="assets/done.png" title="done!" />').delay(2000).fadeOut(450,function(){$(this).html('')});
-            setTimeout(populateFeed,1000);
+	FB.getLoginStatus(function(response) {
+  		if (response.session) {
+			var newTime = (new Date()).getTime();
+			if( newTime - lastSearchTime > 500 ) {
+				lastSearchTime = newTime;
+				setTimeout(search,50);
+			}
 		}
 	});
-	return false;
 });
-$sadd.submit(function() {
-    var url = $url.val(),
-		type = validate( url );
-	$spreview.hide().html('<img class="loading" src="assets/loading.gif" title="loading..." />').fadeIn('fast');
-	$.ajax({
-		url:'handler.php',
-		dataType:'json',
-		cache:'false',
-		data: {
-			action: 'add',
-			sid: type,
-			url: url
-		},
-		success: function( data ) {
-			$url.val('');
-            $spreview.html('<img class="loading" src="assets/done.png" title="done!" />').delay(2000).fadeOut(450,function(){$(this).html('')});
-            setTimeout(window.close,3000);
-		}
+$add.submit(function(e) {
+	stopEvent(e);
+	var url = $url.val(),
+	type = validate( url );
+	FB.getLoginStatus(function(response) {
+  		if (response.session) {
+  			if(type !== -1) {
+				$preview.hide().html('<img class="loading" src="assets/loading.gif" title="loading..." />').fadeIn('fast');
+				$.ajax({
+					url:'handler.php',
+					dataType:'json',
+					cache:'false',
+					data: {
+						action: 'add',
+						sid: type,
+						url: url
+					},
+					success: function( data ) {
+						$url.val('');
+						$preview.html('<img class="loading" src="assets/done.png" title="done!" />').delay(2000).fadeOut(450,function(){$(this).html('')});
+						setTimeout(populateFeed("ORDER BY c_clips.c_ts_added DESC",0),500);
+					}
+				});
+			} else {
+				alert('That seems to be an invalid video. Try a different URL!');
+			}
+  		} else {
+  			alert('You must be logged in to do that!');
+  			FB.login();
+  		}
 	});
-	return false;
+    return false;
+});
+$sadd.submit(function(e) {
+	stopEvent(e);
+	FB.getLoginStatus(function(response) {
+		var url = $url.val(),
+		type = validate( url );
+		if (response.session) {
+			if(type !== -1) {
+				$spreview.hide().html('<img class="loading" src="assets/loading.gif" title="loading..." />').fadeIn('fast');
+				$.ajax({
+					url:'handler.php',
+					dataType:'json',
+					cache:'false',
+					data: {
+						action: 'add',
+						sid: type,
+						url: url
+					},
+					success: function( data ) {
+						$url.val('');
+						$spreview.html('<img class="loading" src="assets/done.png" title="done!" />').delay(2000).fadeOut(450,function(){$(this).html('')});
+						setTimeout(window.close,3000);
+					}
+				});
+				
+			} else {
+				alert('That seems to be an invalid video. Try a different URL!');
+			}
+		} else {
+			alert('You must be logged in to do that!');
+			FB.login();
+		}
+    });
+    return false;
 });

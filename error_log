@@ -172,3 +172,11 @@ Stack trace:
 [16-Oct-2010 12:58:06] PHP Warning:  mysql_query() [<a href='function.mysql-query'>function.mysql-query</a>]: Access denied for user 'paulma6'@'localhost' (using password: NO) in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 118
 [16-Oct-2010 12:58:06] PHP Warning:  mysql_query() [<a href='function.mysql-query'>function.mysql-query</a>]: A link to the server could not be established in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 118
 [16-Oct-2010 12:58:06] PHP Warning:  mysql_close(): 312 is not a valid MySQL-Link resource in /home/paulma6/public_html/projects/clippfeed/connect.php on line 19
+[16-Oct-2010 23:42:13] PHP Warning:  print_r() expects at least 1 parameter, 0 given in /home/paulma6/public_html/projects/clippfeed/handler.php on line 49
+[16-Oct-2010 23:43:22] PHP Warning:  print_r() expects at least 1 parameter, 0 given in /home/paulma6/public_html/projects/clippfeed/handler.php on line 49
+[16-Oct-2010 23:43:25] PHP Warning:  print_r() expects at least 1 parameter, 0 given in /home/paulma6/public_html/projects/clippfeed/handler.php on line 49
+[16-Oct-2010 23:45:59] PHP Warning:  print_r() expects at least 1 parameter, 0 given in /home/paulma6/public_html/projects/clippfeed/handler.php on line 49
+[16-Oct-2010 23:47:53] PHP Warning:  print_r() expects at least 1 parameter, 0 given in /home/paulma6/public_html/projects/clippfeed/handler.php on line 49
+[16-Oct-2010 23:51:01] PHP Warning:  print_r() expects at least 1 parameter, 0 given in /home/paulma6/public_html/projects/clippfeed/handler.php on line 49
+[16-Oct-2010 23:51:58] PHP Warning:  print_r() expects at least 1 parameter, 0 given in /home/paulma6/public_html/projects/clippfeed/handler.php on line 49
+[17-Oct-2010 00:02:19] PHP Warning:  print_r() expects at least 1 parameter, 0 given in /home/paulma6/public_html/projects/clippfeed/handler.php on line 49

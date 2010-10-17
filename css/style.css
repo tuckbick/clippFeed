@@ -148,7 +148,7 @@ body {
 
 #embed {
 	left: 24em;
-	position: absolute;
+	position: absolute;	
 	top: 8.8em;
 }
 
@@ -220,12 +220,12 @@ h3 {
 }
 ul {
 	list-style: none;
+	width: 19.85em;
 }
 li {
 	padding:0.2em;
 	position:relative;
 	left:-30px;
-	white-space:nowrap;
 }
 a:link, a:active {
 	text-decoration:none;

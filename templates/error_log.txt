@@ -50,3 +50,5 @@
 [16-Oct-2010 06:06:17] PHP Notice:  Undefined index:  file in /home/paulma6/public_html/projects/clippfeed/ti.php on line 342
 [16-Oct-2010 06:06:29] PHP Warning:  require_once(Zend/Loader.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 7
 [16-Oct-2010 06:06:29] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'Zend/Loader.php' (include_path='.:/usr/lib/php:/usr/local/lib/php:apis/gdata/library') in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 7
+[16-Oct-2010 17:21:04] PHP Notice:  Undefined index:  HTTP_ACCEPT_ENCODING in /home/paulma6/public_html/projects/clippfeed/templates/layout.php on line 17
+[16-Oct-2010 20:03:36] PHP Notice:  Undefined index:  HTTP_ACCEPT_ENCODING in /home/paulma6/public_html/projects/clippfeed/templates/layout.php on line 17

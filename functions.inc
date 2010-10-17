@@ -7,24 +7,30 @@ $oldPath = set_include_path(get_include_path() . PATH_SEPARATOR . $clientLibrary
 require_once 'Zend/Loader.php';
 Zend_Loader::loadClass('Zend_Gdata_YouTube');
 
-function get_feed($cookies,$page=0,$order="c_clips.c_title ASC") {
+function get_feed($cookies,$order="ORDER BY c_clips.c_ts_added DESC",$page=0,$perpage=15) {
 	if($cookies) {
 		$con = con();
 		$count = get_count('c_cid_uid','uid='.$cookies['uid']);
 		$query = 'SELECT * FROM c_cid_uid
 			INNER JOIN c_clips ON c_cid_uid.cid = c_clips.cid
 			INNER JOIN c_servs ON c_clips.sid = c_servs.sid 
-			WHERE c_cid_uid.uid = '.$cookies['uid'].' ORDER BY '.$order.' LIMIT 30';
+			WHERE c_cid_uid.uid = '.$cookies['uid'].' '.$order.' LIMIT 15 OFFSET '.($page*$perpage);
 		$result = mysql_query($query);
 		while($row = mysql_fetch_assoc($result)) {
 			$return[$row['cid']] = $row;
 		}
 		if(sizeof($return)==0) {
-			$return = null;
+			$return[0] = "You don't seem to have any results.";
+		} 
+		if($page!=0) {
+			array_push($return,'<a href="javascript:populateFeed(' . $arg . ','. $page-1 .')"><< prev</a>');
+		}
+		if(sizeof($return)<get_count("c_cid_uid",'uid = '.$cookies['uid'])) {
+			array_push($return,'<a href="javascript:populateFeed(' . $arg . ','. $page+1 .')">next >></a>');
 		}
 		discon($con);
 	} else {
-		$return = null;
+		$return[0] = "You don't seem to have any results.";
 	}
 	return $return;
 }
@@ -92,7 +98,7 @@ function get_count($table, $param) {
 
 function get_search($cookies,$term) {
 	if($term=='') {
-		return get_feed();
+		$ret = get_feed($cookies,"ORDER BY c_clips.c_ts_added DESC",0,15);
 	} else {
 		$con = con();
 		$query = "SELECT * FROM c_clips 
@@ -100,6 +106,7 @@ function get_search($cookies,$term) {
 				INNER JOIN c_servs ON c_servs.sid=c_clips.sid 
 				WHERE CONCAT(c_clips.c_title, ' ', c_clips.c_desc) LIKE '%".$term."%'";
 		if($cookies) { $query .= " AND c_cid_uid.uid=".$cookies['uid']; }
+		$query .= ' LIMIT 15';
 		$result = mysql_query($query);
 		$ret = array();
 		discon($con);
@@ -109,7 +116,6 @@ function get_search($cookies,$term) {
 	}
 	return $ret;
 }
-
 
 function add_clip($vid,$sid) {
 	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
