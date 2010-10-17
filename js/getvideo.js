@@ -41,10 +41,19 @@ function populateFeed(arg,page) {
 			page: page
 		},
 		success: function( data ) {
-            var ret = ['<h3>My Videos</h3><ul>'];
+            var ret = ['<h3>My Videos</h3><ul>'],
             if(data[0]!="You don't seem to have any results.") {
            		for(var i in data) {
-                	ret.push( '<li><a href="javascript:getVideo('+ data[i].cid +')">'+ data[i].c_title +'</a><span class="source">'+ data[i].serv_name +'</span></li>' );
+           			if(data[i].cid) {
+                		ret.push( '<li><a href="javascript:getVideo('+ data[i].cid +')">'+ data[i].c_title +'</a><span class="source">'+ data[i].serv_name +'</span></li>' );
+                	} else {
+                		var inc = 1;
+                		if(data[i]==="prev") {
+                			inc = -1;
+                		}
+                		inc = page + inc; 
+                		ret.push( '<li><a href="javascript:populateFeed(\'' + arg + '\',' + inc + ')">'+data[i]+'</a></li>' );
+                	}
             	}
             } else {
             	ret.push( '<li><em>Welcome to <strong>clippFeed</strong>! This is a site where you can organize and share links to your favorite videos from across the web. To see us in action, login and add some videos!</em></li>' );

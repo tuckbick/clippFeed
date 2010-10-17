@@ -2,6 +2,7 @@
 
 include_once 'functions2.inc';
 include_once 'fb_funcs.php';
+require_once 'connect.php';
 $clientLibraryPath = 'apis/gdata/library';
 $oldPath = set_include_path(get_include_path() . PATH_SEPARATOR . $clientLibraryPath);
 require_once 'Zend/Loader.php';
@@ -9,13 +10,14 @@ Zend_Loader::loadClass('Zend_Gdata_YouTube');
 
 function get_feed($cookies,$order="ORDER BY c_clips.c_ts_added DESC",$page=0,$perpage=15) {
 	if($cookies) {
-		$con = con();
 		$count = get_count('c_cid_uid','uid='.$cookies['uid']);
+		$con = con();
 		$query = 'SELECT * FROM c_cid_uid
 			INNER JOIN c_clips ON c_cid_uid.cid = c_clips.cid
 			INNER JOIN c_servs ON c_clips.sid = c_servs.sid 
 			WHERE c_cid_uid.uid = '.$cookies['uid'].' '.$order.' LIMIT 15 OFFSET '.($page*$perpage);
 		$result = mysql_query($query);
+		discon($con);
 		while($row = mysql_fetch_assoc($result)) {
 			$return[$row['cid']] = $row;
 		}
@@ -23,12 +25,11 @@ function get_feed($cookies,$order="ORDER BY c_clips.c_ts_added DESC",$page=0,$pe
 			$return[0] = "You don't seem to have any results.";
 		} 
 		if($page!=0) {
-			array_push($return,'<a href="javascript:populateFeed(' . $arg . ','. $page-1 .')"><< prev</a>');
+			array_push($return,'prev');
 		}
-		if(sizeof($return)<get_count("c_cid_uid",'uid = '.$cookies['uid'])) {
-			array_push($return,'<a href="javascript:populateFeed(' . $arg . ','. $page+1 .')">next >></a>');
+		if(sizeof($return)<$count && !floor($count/$perpage)==$page) {
+			array_push($return,'next');
 		}
-		discon($con);
 	} else {
 		$return[0] = "You don't seem to have any results.";
 	}
@@ -91,9 +92,12 @@ function get_video($vid,$sid) {
 }
 
 function get_count($table, $param) {
-	$query = "SELECT COUNT(*) ON ".$table." WHERE ".$param;
+	$con = con();
+	$query = "SELECT COUNT(*) FROM ".$table." WHERE ".$param;
 	$result = mysql_query($query);
-	return $result;
+	$row = mysql_fetch_array($result) or die(mysql_error());
+	discon($con);
+	return $row['COUNT(*)'];
 }
 
 function get_search($cookies,$term) {
@@ -120,13 +124,18 @@ function get_search($cookies,$term) {
 function add_clip($vid,$sid) {
 	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
 	if($cookies) {
-		$con = con();
-		$video = get_video($vid,$sid);
-		$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`) VALUES ("'.$vid.'","'.$video['title'].'","'.$video['desc'].'",'.$sid.')'; 
-		$result = mysql_query($query);
-		discon($con);
-		if($result) {
-			add_assoc_uid($vid,$cookies);
+		if(get_count("c_clips","vid='".$vid."'")<1) {
+			echo "herro";
+			$con = con();
+			$video = get_video($vid,$sid);
+			$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`) VALUES ("'.$vid.'","'.$video['title'].'","'.$video['desc'].'",'.$sid.') ON DUPLICATE KEY UPDATE'; 
+			$result = mysql_query($query);
+			discon($con);
+			if($result) {
+				add_assoc_uid($vid,$cookies);
+			}
+		} else {
+			$result = add_assoc_uid($vid,$cookies);
 		}
 	} else {
 		$result = false;
@@ -136,10 +145,15 @@ function add_clip($vid,$sid) {
 
 function add_assoc_uid($vid,$cookies) {
 	$cid = get_cid($vid);
-	$con = con();
-	$query = 'INSERT INTO c_cid_uid (`cid`,`uid`) VALUES ('.$cid.','.$cookies['uid'].');';
-	$result = mysql_query($query);
-	discon($con);
+	if(get_count("c_cid_uid","cid=".$cid." AND uid=".$cookies['uid'])<1) {
+		$result = true;
+		$con = con();
+		$query = 'INSERT INTO c_cid_uid VALUES ('.$cid.','.$cookies['uid'].')';
+		$result = mysql_query($query);
+		discon($con);
+	} else {
+		$result = false;
+	}
 	return $result;
 }
 
@@ -155,15 +169,49 @@ function delete_clip($cookies,$cid) {
 	return $result;
 }
 
-/*function here($vid) {
-	$query = "SELECT * FROM c_clips WHERE vid='".$vid."'";
-	$result = mysql_query($query);
-	if(mysql_num_rows($result)!=0) {
-		$return = true;
-	} else {
-		$return = false;
+function eliminate_duplicates($table) {
+	echo "RUNNING eliminate_duplicates on ".$table."...<br />";
+	$con = con();
+	$q1 = "CREATE TABLE temp_".$table." LIKE ".$table.";";
+	$q2 = "INSERT INTO temp_".$table." SELECT DISTINCT * FROM ".$table.";";
+	$q3 = "DROP TABLE ".$table.";";
+	$q4 = "RENAME TABLE temp_".$table." TO ".$table.";";
+	echo "running ".$q1."... ";
+	$r1 = mysql_query($q1);
+	if($r1) {
+		echo "success!<br />running ".$q2."... ";
+	   $r2 = mysql_query($q2);
+	   if($r2) {
+	   	  echo "success!<br />running ".$q3." and ".$q4;
+	      $r3 = mysql_query($q3);
+	      $r4 = mysql_query($q4);
+	   }
 	}
-	return $return;
-}*/
+	return "<br />".$r4;
+	discon($con);
+}
+
+function garbage_collection($t1,$t2,$p) {
+	echo "RUNNING garbage_collection on ".$t1."/".$t2.":".$p."...<br />";
+	//checks if there is an instance of $t1 in $t2 of parameter $p, removes those that aren't in there
+	$con = con();
+	$q1 = "CREATE TABLE temp_".$t1." LIKE ".$t1.";";
+	$q2 = "INSERT INTO temp_".$t1." SELECT * FROM ".$t1." WHERE ".$p." IN (SELECT DISTINCT ".$p." FROM ".$t2.");";
+	$q3 = "DROP TABLE ".$t1.";";
+	$q4 = "RENAME TABLE temp_".$t1." TO ".$t1.";";
+	echo "running ".$q1."... ";
+	$r1 = mysql_query($q1);
+	if($r1) {
+		echo "success!<br />running ".$q2."... ";
+	   $r2 = mysql_query($q2);
+	   if($r2) {
+	   	  echo "success!<br />running ".$q3." and ".$q4;
+	      $r3 = mysql_query($q3);
+	      $r4 = mysql_query($q4);
+	   }
+	}
+	return "<br />".$r4;
+	discon($con);
+}
 
 ?>

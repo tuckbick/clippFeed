@@ -115,6 +115,9 @@ $cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e1326
       FB.Event.subscribe('auth.login', function(response) {
         window.location.reload();
       });
+      FB.Event.subscribe('auth.logout', function(response) {
+        window.location.reload();
+      });
   </script>
   <?php emptyblock('scriptTag') ?>
   <script>

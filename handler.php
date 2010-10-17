@@ -46,8 +46,7 @@ switch($_GET['action']) {
 		if($cookies && isset($_GET['arg']) && isset($_GET['page'])) {
 			$return = get_feed($cookies,$_GET['arg'],$_GET['page']);
 		} else {
-			print_r();
-			$return[0] = "You don't seem to have any results.";
+ 			$return[0] = "You don't seem to have any results.";
 		}
 		break;
 	case "getClipEmbed":
