@@ -95,6 +95,8 @@ $cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e1326
         <?php emptyblock('content') ?>
     </div>
     
+    <?php emptyblock('embed') ?>
+    
     <footer>
 
     </footer>

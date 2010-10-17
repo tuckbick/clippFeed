@@ -96,6 +96,7 @@ body {
 	width:960px;
 	margin: 2em auto;
 	display:relative;
+	position:relative;
 }
 
 #scontainer {
@@ -145,6 +146,12 @@ body {
 	margin-top:1em;
 }
 
+#embed {
+	left: 24em;
+	position: absolute;
+	top: 8.8em;
+}
+
 #main {
 	padding:1em;
 	background-color:#3D8FC3;
@@ -156,10 +163,6 @@ body {
 
 #smain {
 	padding:1em;
-	min-height:400px;
-	opacity:0.95;
-	-moz-border-radius: 0 0 2px 2px;
-	border-radius: 0 0 2px 2px;
 }
 
 #new_url {

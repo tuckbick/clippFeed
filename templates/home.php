@@ -23,14 +23,18 @@ startblock('content');
             <input id="new_url" name="url" type="text" value="<?php echo $u ?>" />
             <input type="submit" id="add_submit" value="Add" />
         </form>
-        <div id="new_url_preview"></div>
+    </div>
+</div>
+
+<?php endblock();
+
+startblock('embed'); ?>
+    <div id="embed">
         <div id="clip_embed"></div>
         <div id="below">
             <a id="delete_video" href="javascript:deleteVideo()">Delete</a>
         </div>
     </div>
-</div>
-
 <?php endblock();
 
 startblock('scriptTag'); ?>
