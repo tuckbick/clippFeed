@@ -3,9 +3,9 @@
 
 		//Connect To Database
 		$hostname='localhost';
-		$username='paulma6';
-		$password='2011pjm!';
-		$dbname='paulma6_portfolio';
+		$username='XXXXX';
+		$password='XXXXX';
+		$dbname='XXXXX';
 
 		$con = mysql_connect($hostname,$username, $password) OR DIE ('Unable to connect to database! Please try again later.');
 		mysql_select_db($dbname);
