@@ -141,7 +141,7 @@ $cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e1326
   <script src="js/profiling/config.js?v=1"></script>
 
   <script>
-   var _gaq = [['_setAccount', 'UA-6013405-1'], ['_trackPageview']]; 
+   var _gaq = [['_setAccount', 'UA-6013405-2'], ['_trackPageview']]; 
    (function(d, t) {
     var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
     g.async = true; g.src = '//www.google-analytics.com/ga.js'; s.parentNode.insertBefore(g, s);
