@@ -14,7 +14,8 @@ function getVideo(cid) {
 	});	
 }
 function addFacebookLinkVids() {
-	$(this).html('working...');
+    $fb = $('#addFacebookVids');
+	$fb.html('working...');
 	$.ajax({
 		url:'handler.php',
 		dataType:'json',
@@ -23,9 +24,8 @@ function addFacebookLinkVids() {
 			action: 'addFacebookLinkVids'
 		},
 		success: function( data ) {
-			alert(data.count + " videos added from your Facebook.");
+			$fb.html('done! '+ data.count + " videos were added from your Facebook.");
 			populateFeed("ORDER BY c_clips.c_ts_added DESC",0);
-			$(this).html('done!');
 		}
 	});	
 }
