@@ -89,6 +89,8 @@ $cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e1326
         <!--<h1>clippFeed</h1>-->
         <img src="assets/clippfeed-logo.png" />
         <a id="bookmarklet" href="javascript:var%20d%3Ddocument%2Cf%3D%22http%3A%2F%2Fwww.paulmarbach.com%2Fprojects%2Fclippfeed%2Fshare%3F%22%2Cl%3Dd.location%2Ce%3DencodeURIComponent%3Bf%2B%3D%22u%3D%22%2Be(l.href)%2B%22%26t%3D%22%2Be(d.title)%3Ba%3Dfunction()%7Bif(!window.open(f%2C%22sharer%22%2C%22toolbar%3D0%2Cstatus%3D0%2Cresizable%3D1%2Cwidth%3D626%2Cheight%3D436%22))l.href%3Df%2Bp%7D%3B%2FFirefox%2F.test(navigator.userAgent)%3FsetTimeout(a%2C0)%3Aa()%3B">bookmarklet</a>
+        <a href="javascript:addFacebookLinkVids()">click here to import videos that you've posted on Facebook</a>
+
     </header>
     
     <div id="main">

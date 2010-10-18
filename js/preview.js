@@ -25,13 +25,13 @@ $clipembed = $('#clip_embed'),
 lastURLTime = 0,
 lastSearchTime = 0,
 _cid = 0,
-function stopEvent(e) {
+stopEvent = function(e) {
     if (e.stopPropagation) e.stopPropagation();
     else e.cancelBubble = true;
 
     if (e.preventDefault) e.preventDefault();
     else e.returnValue = false;
-}
+},
 SupdatePreview = function() {
 	var url = $url.val();
 	if( url && url != '' ) {
@@ -104,26 +104,30 @@ search = function() {
   		if (response.session) {
 			var q = $search.val();
 			if( q ) {
-				$.ajax({
-					url: 'handler.php',
-					dataType: 'json',
-					cache: true,
-					data: {
-						action: 'search',
-						term: q
-					},
-					success: function( data ) {
-						var ret = ['<h3>My Videos</h3><ul>'];
-						for(var i in data) {
-							ret.push( '<li><a href="javascript:getVideo('+ data[i].cid +')">'+ data[i].c_title +'</a><span class="source">'+ data[i].serv_name +'</span></li>' );
+				if(q !== '') {
+					$.ajax({
+						url: 'handler.php',
+						dataType: 'json',
+						cache: true,
+						data: {
+							action: 'search',
+							term: q
+						},
+						success: function( data ) {
+							var ret = ['<h3>My Videos</h3><ul>'];
+							for(var i in data) {
+								ret.push( '<li><a href="javascript:getVideo('+ data[i].cid +')">'+ data[i].c_title +'</a><span class="source">'+ data[i].serv_name +'</span></li>' );
+							}
+							ret.push( '<ul>' );
+							$leftbar.html(ret.join(''));
+						},
+						error: function( ) {
+							setTimeout(populateFeed("ORDER BY c_clips.c_ts_added DESC",0),50);
 						}
-						ret.push( '<ul>' );
-						$leftbar.html(ret.join(''));
-					},
-					error: function( ) {
-		
-					}
-				});
+					});
+				} else {
+					setTimeout(populateFeed("ORDER BY c_clips.c_ts_added DESC",0),50);
+				}
 			}
 		} else {
 			//what to do when not logged in
@@ -162,12 +166,16 @@ $url.bind('keyup paste', function(e) {
 $search.bind('keyup paste', function(e) {
 	FB.getLoginStatus(function(response) {
   		if (response.session) {
-			var newTime = (new Date()).getTime();
-			if( newTime - lastSearchTime > 500 ) {
-				lastSearchTime = newTime;
-				setTimeout(search,50);
+  			if($search.val() !== '') {
+				var newTime = (new Date()).getTime();
+				if( newTime - lastSearchTime > 500 ) {
+					lastSearchTime = newTime;
+					setTimeout(search,50);
+				}
+			} else {
+				setTimeout(populateFeed("ORDER BY c_clips.c_ts_added DESC",0),50);
 			}
-		}
+		}	
 	});
 });
 $add.submit(function(e) {
@@ -190,7 +198,7 @@ $add.submit(function(e) {
 					success: function( data ) {
 						$url.val('');
 						$preview.html('<img class="loading" src="assets/done.png" title="done!" />').delay(2000).fadeOut(450,function(){$(this).html('')});
-						setTimeout(populateFeed("ORDER BY c_clips.c_ts_added DESC",0),500);
+						setTimeout(populateFeed("ORDER BY c_clips.c_ts_added DESC",0),250);
 					}
 				});
 			} else {

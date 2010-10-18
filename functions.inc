@@ -1,8 +1,9 @@
 <?php
 
-include_once 'functions2.inc';
-include_once 'fb_funcs.php';
+require_once 'functions2.inc';
+require_once 'fb_funcs.php';
 require_once 'connect.php';
+require_once 'apis/facebook-php-sdk/src/facebook.php';
 $clientLibraryPath = 'apis/gdata/library';
 $oldPath = set_include_path(get_include_path() . PATH_SEPARATOR . $clientLibraryPath);
 require_once 'Zend/Loader.php';
@@ -24,10 +25,10 @@ function get_feed($cookies,$order="ORDER BY c_clips.c_ts_added DESC",$page=0,$pe
 		if(sizeof($return)==0) {
 			$return[0] = "You don't seem to have any results.";
 		} 
-		if($page!=0) {
+		if($page != 0) {
 			array_push($return,'prev');
 		}
-		if(sizeof($return)<$count && !floor($count/$perpage)==$page) {
+		if(sizeof($return)<$count && $page<(floor(($count+1)/$perpage)-1)) {
 			array_push($return,'next');
 		}
 	} else {
@@ -61,6 +62,16 @@ function get_cid($vid) {
 	return $return;
 }
 
+function get_sid($url) {
+	$exps = array('/youtube.com\/watch\?(?=.*v=\w+)(?:\S+)+/','/vimeo.com(\/|\/clip:)(\d+)(.*?)/');
+	for($i=0;$i<sizeof($exps);$i++) {
+        if (preg_match($exps[$i],$url)) {
+        	return $i;
+        }
+    }
+    return -1;
+}
+
 function get_clip($cid,$limit="LIMIT 1") {
 	$con = con();
 	$query = 'SELECT * FROM c_clips 
@@ -78,14 +89,25 @@ function get_video($vid,$sid) {
 	switch($sid) {
 		case 0:
 			$yt = new Zend_Gdata_YouTube();
-			$v_obj = $yt->getVideoEntry($vid);
-			$video['title'] = addslashes($v_obj->getVideoTitle());
-			$video['desc'] = addslashes($v_obj->getVideoDescription());
+			
+			try {
+				$v_obj = $yt->getVideoEntry($vid);
+				if($v_obj->isVideoPrivate()==false && $v_obj->isVideoEmbeddable()==true) {
+					$video['title'] = htmlentities($v_obj->getVideoTitle());
+					$video['desc'] = htmlentities($v_obj->getVideoDescription());
+					$video['private'] = 0;
+				} else {
+					$video['private'] = 1;
+				}
+			} catch(Zend_Gdata_App_HttpException $e) {
+				$video['private'] = 1;
+			}
 			break;
 		case 1:
 			$vim = unserialize(file_get_contents("http://vimeo.com/api/v2/video/".$vid.".php"));
-			$video['desc'] = addslashes($vim[0]['description']);
-			$video['title'] = addslashes($vim[0]['title']);
+			$video['desc'] = htmlentities($vim[0]['description']);
+			$video['title'] = htmlentities($vim[0]['title']);
+			$video['private'] = 0;
 			break;
 	}
 	return $video;
@@ -125,14 +147,19 @@ function add_clip($vid,$sid) {
 	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
 	if($cookies) {
 		if(get_count("c_clips","vid='".$vid."'")<1) {
-			echo "herro";
 			$con = con();
 			$video = get_video($vid,$sid);
-			$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`) VALUES ("'.$vid.'","'.$video['title'].'","'.$video['desc'].'",'.$sid.') ON DUPLICATE KEY UPDATE'; 
-			$result = mysql_query($query);
+			if($video['private'] != 1) {
+				$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`) VALUES ("'.$vid.'","'.$video['title'].'","'.$video['desc'].'",'.$sid.')'; 
+				$result = mysql_query($query);
+			} else {
+				return false;
+			}
 			discon($con);
 			if($result) {
 				add_assoc_uid($vid,$cookies);
+			} else {
+				echo $query;
 			}
 		} else {
 			$result = add_assoc_uid($vid,$cookies);

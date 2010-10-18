@@ -13,6 +13,22 @@ function getVideo(cid) {
 		}
 	});	
 }
+function addFacebookLinkVids() {
+	$(this).html('working...');
+	$.ajax({
+		url:'handler.php',
+		dataType:'json',
+		cache:'false',
+		data: {
+			action: 'addFacebookLinkVids'
+		},
+		success: function( data ) {
+			alert(data.count + " videos added from your Facebook.");
+			populateFeed("ORDER BY c_clips.c_ts_added DESC",0);
+			$(this).html('done!');
+		}
+	});	
+}
 function deleteVideo() {
 	$.ajax({
 		url:'handler.php',
@@ -41,18 +57,18 @@ function populateFeed(arg,page) {
 			page: page
 		},
 		success: function( data ) {
-            var ret = ['<h3>My Videos</h3><ul>'],
+            var ret = ['<h3>My Videos  <span class="source">(' + data.size + ')</span></h3><ul>'];
             if(data[0]!="You don't seem to have any results.") {
-           		for(var i in data) {
-           			if(data[i].cid) {
-                		ret.push( '<li><a href="javascript:getVideo('+ data[i].cid +')">'+ data[i].c_title +'</a><span class="source">'+ data[i].serv_name +'</span></li>' );
+           		for(var i in data['results']) {
+           			if(data.results[i].cid) {
+                		ret.push( '<li><a href="javascript:getVideo('+ data.results[i].cid +')">'+ data.results[i].c_title +'</a><span class="source">'+ data.results[i].serv_name +'</span></li>' );
                 	} else {
                 		var inc = 1;
-                		if(data[i]==="prev") {
+                		if(data.results[i]==="prev") {
                 			inc = -1;
                 		}
                 		inc = page + inc; 
-                		ret.push( '<li><a href="javascript:populateFeed(\'' + arg + '\',' + inc + ')">'+data[i]+'</a></li>' );
+                		ret.push( '<li style="float:left;"><a href="javascript:populateFeed(\'' + arg + '\',' + inc + ')">'+data.results[i]+'</a>   </li>' );
                 	}
             	}
             } else {

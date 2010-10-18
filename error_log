@@ -241,3 +241,130 @@ Stack trace:
 [17-Oct-2010 03:18:47] PHP Warning:  print_r() expects at least 1 parameter, 0 given in /home/paulma6/public_html/projects/clippfeed/handler.php on line 49
 [17-Oct-2010 03:36:03] PHP Warning:  print_r() expects at least 1 parameter, 0 given in /home/paulma6/public_html/projects/clippfeed/handler.php on line 49
 [17-Oct-2010 03:36:07] PHP Warning:  print_r() expects at least 1 parameter, 0 given in /home/paulma6/public_html/projects/clippfeed/handler.php on line 49
+[17-Oct-2010 11:30:22] PHP Warning:  include_once(functions.php) [<a href='function.include-once'>function.include-once</a>]: failed to open stream: No such file or directory in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 3
+[17-Oct-2010 11:30:22] PHP Warning:  include_once() [<a href='function.include'>function.include</a>]: Failed opening 'functions.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 3
+[17-Oct-2010 11:30:22] PHP Fatal error:  Call to undefined function  get_facebook_cookie() in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 4
+[17-Oct-2010 11:32:00] PHP Parse error:  syntax error, unexpected ';' in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 6
+[17-Oct-2010 11:32:17] PHP Warning:  include_once(functions.php) [<a href='function.include-once'>function.include-once</a>]: failed to open stream: No such file or directory in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 3
+[17-Oct-2010 11:32:17] PHP Warning:  include_once() [<a href='function.include'>function.include</a>]: Failed opening 'functions.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 3
+[17-Oct-2010 11:32:17] PHP Fatal error:  Call to undefined function  get_facebook_cookie() in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 4
+[17-Oct-2010 11:32:32] PHP Warning:  include_once(functions.php) [<a href='function.include-once'>function.include-once</a>]: failed to open stream: No such file or directory in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 3
+[17-Oct-2010 11:32:32] PHP Warning:  include_once() [<a href='function.include'>function.include</a>]: Failed opening 'functions.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 3
+[17-Oct-2010 11:32:32] PHP Fatal error:  Call to undefined function  get_facebook_cookie() in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 4
+[17-Oct-2010 11:32:38] PHP Warning:  include_once(functions.php) [<a href='function.include-once'>function.include-once</a>]: failed to open stream: No such file or directory in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 3
+[17-Oct-2010 11:32:38] PHP Warning:  include_once() [<a href='function.include'>function.include</a>]: Failed opening 'functions.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 3
+[17-Oct-2010 11:32:38] PHP Fatal error:  Call to undefined function  get_facebook_cookie() in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 4
+[17-Oct-2010 11:56:02] PHP Parse error:  syntax error, unexpected ')', expecting ',' or ';' in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 6
+[17-Oct-2010 11:58:07] PHP Parse error:  syntax error, unexpected T_VARIABLE, expecting ',' or ';' in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 6
+[17-Oct-2010 12:02:13] PHP Fatal error:  Call to a member function fql_query() on a non-object in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 6
+[17-Oct-2010 12:03:11] PHP Fatal error:  Class 'Facebook' not found in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 4
+[17-Oct-2010 12:03:20] PHP Fatal error:  Class 'Facebook' not found in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 4
+[17-Oct-2010 12:04:16] PHP Fatal error:  Call to a member function fql_query() on a non-object in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 13
+[17-Oct-2010 12:04:45] PHP Fatal error:  Call to a member function fql_query() on a non-object in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 12
+[17-Oct-2010 12:05:53] PHP Fatal error:  Call to a member function fql_query() on a non-object in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 15
+[17-Oct-2010 12:05:58] PHP Warning:  include_once(/apis/facebook-php-sdk/src/facebook.php) [<a href='function.include-once'>function.include-once</a>]: failed to open stream: No such file or directory in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 4
+[17-Oct-2010 12:05:58] PHP Warning:  include_once() [<a href='function.include'>function.include</a>]: Failed opening '/apis/facebook-php-sdk/src/facebook.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php:apis/gdata/library') in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 4
+[17-Oct-2010 12:05:58] PHP Fatal error:  Class 'Facebook' not found in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 6
+[17-Oct-2010 12:06:47] PHP Fatal error:  Call to a member function fql_query() on a non-object in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 14
+[17-Oct-2010 12:14:18] PHP Fatal error:  Call to a member function fql_query() on a non-object in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 14
+[17-Oct-2010 12:17:05] PHP Fatal error:  Call to a member function fql_query() on a non-object in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 15
+[17-Oct-2010 12:17:33] PHP Fatal error:  Call to a member function fql_query() on a non-object in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 15
+[17-Oct-2010 12:24:20] PHP Fatal error:  Call to a member function fql_query() on a non-object in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 21
+[17-Oct-2010 12:24:37] PHP Fatal error:  Call to a member function fql_query() on a non-object in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 23
+[17-Oct-2010 12:28:39] PHP Fatal error:  Call to a member function friends_get() on a non-object in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 22
+[17-Oct-2010 12:30:33] PHP Fatal error:  Call to a member function friends_get() on a non-object in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 22
+[17-Oct-2010 12:57:18] PHP Warning:  curl_close(): supplied argument is not a valid cURL handle resource in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 34
+[17-Oct-2010 13:04:55] PHP Parse error:  syntax error, unexpected '}' in /home/paulma6/public_html/projects/clippfeed/fb_funcs.php on line 32
+[17-Oct-2010 13:06:17] PHP Parse error:  syntax error, unexpected ';' in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 6
+[17-Oct-2010 13:14:25] PHP Parse error:  syntax error, unexpected '{', expecting ')' in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 219
+[17-Oct-2010 13:14:43] PHP Parse error:  syntax error, unexpected '{', expecting ')' in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 219
+[17-Oct-2010 13:15:16] PHP Parse error:  syntax error, unexpected '}' in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 228
+[17-Oct-2010 13:15:32] PHP Fatal error:  Cannot use object of type stdClass as array in /home/paulma6/public_html/projects/clippfeed/yourvideos.php on line 9
+[17-Oct-2010 13:29:09] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 79
+[17-Oct-2010 13:30:06] PHP Parse error:  syntax error, unexpected T_DEFAULT in /home/paulma6/public_html/projects/clippfeed/handler.php on line 79
+[17-Oct-2010 13:34:06] PHP Fatal error:  Uncaught exception 'Zend_Gdata_App_HttpException' with message 'Expected response code 200, got 403
+Private video' in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php:709
+Stack trace:
+#0 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(221): Zend_Gdata_App->performHttpRequest('GET', 'http://gdata.yo...', Array, NULL, NULL, NULL)
+#1 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(875): Zend_Gdata->performHttpRequest('GET', 'http://gdata.yo...', Array)
+#2 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(763): Zend_Gdata_App->get('http://gdata.yo...', NULL)
+#3 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(220): Zend_Gdata_App->importUrl('http://gdata.yo...', 'Zend_Gdata_YouT...', NULL)
+#4 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(187): Zend_Gdata_App->getEntry('http://gdata.yo...', 'Zend_Gdata_YouT...')
+#5 /h in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php on line 709
+[17-Oct-2010 13:36:18] PHP Fatal error:  Uncaught exception 'Zend_Gdata_App_HttpException' with message 'Expected response code 200, got 403
+Private video' in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php:709
+Stack trace:
+#0 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(221): Zend_Gdata_App->performHttpRequest('GET', 'http://gdata.yo...', Array, NULL, NULL, NULL)
+#1 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(875): Zend_Gdata->performHttpRequest('GET', 'http://gdata.yo...', Array)
+#2 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(763): Zend_Gdata_App->get('http://gdata.yo...', NULL)
+#3 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(220): Zend_Gdata_App->importUrl('http://gdata.yo...', 'Zend_Gdata_YouT...', NULL)
+#4 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(187): Zend_Gdata_App->getEntry('http://gdata.yo...', 'Zend_Gdata_YouT...')
+#5 /h in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php on line 709
+[17-Oct-2010 13:44:16] PHP Fatal error:  Uncaught exception 'Zend_Gdata_App_HttpException' with message 'Expected response code 200, got 403
+Private video' in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php:709
+Stack trace:
+#0 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(221): Zend_Gdata_App->performHttpRequest('GET', 'http://gdata.yo...', Array, NULL, NULL, NULL)
+#1 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(875): Zend_Gdata->performHttpRequest('GET', 'http://gdata.yo...', Array)
+#2 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(763): Zend_Gdata_App->get('http://gdata.yo...', NULL)
+#3 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(220): Zend_Gdata_App->importUrl('http://gdata.yo...', 'Zend_Gdata_YouT...', NULL)
+#4 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(187): Zend_Gdata_App->getEntry('http://gdata.yo...', 'Zend_Gdata_YouT...')
+#5 /h in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php on line 709
+[17-Oct-2010 13:53:16] PHP Fatal error:  Call to undefined function  isvideoprivate() in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 93
+[17-Oct-2010 13:53:55] PHP Fatal error:  Uncaught exception 'Zend_Gdata_App_HttpException' with message 'Expected response code 200, got 403
+Private video' in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php:709
+Stack trace:
+#0 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(221): Zend_Gdata_App->performHttpRequest('GET', 'http://gdata.yo...', Array, NULL, NULL, NULL)
+#1 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(875): Zend_Gdata->performHttpRequest('GET', 'http://gdata.yo...', Array)
+#2 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(763): Zend_Gdata_App->get('http://gdata.yo...', NULL)
+#3 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(220): Zend_Gdata_App->importUrl('http://gdata.yo...', 'Zend_Gdata_YouT...', NULL)
+#4 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(187): Zend_Gdata_App->getEntry('http://gdata.yo...', 'Zend_Gdata_YouT...')
+#5 /h in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php on line 709
+[17-Oct-2010 13:55:14] PHP Fatal error:  Uncaught exception 'Zend_Gdata_App_HttpException' with message 'Expected response code 200, got 403
+Private video' in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php:709
+Stack trace:
+#0 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(221): Zend_Gdata_App->performHttpRequest('GET', 'http://gdata.yo...', Array, NULL, NULL, NULL)
+#1 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(875): Zend_Gdata->performHttpRequest('GET', 'http://gdata.yo...', Array)
+#2 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(763): Zend_Gdata_App->get('http://gdata.yo...', NULL)
+#3 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(220): Zend_Gdata_App->importUrl('http://gdata.yo...', 'Zend_Gdata_YouT...', NULL)
+#4 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(187): Zend_Gdata_App->getEntry('http://gdata.yo...', 'Zend_Gdata_YouT...')
+#5 /h in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php on line 709
+[17-Oct-2010 13:55:42] PHP Fatal error:  Uncaught exception 'Zend_Gdata_App_HttpException' with message 'Expected response code 200, got 403
+Private video' in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php:709
+Stack trace:
+#0 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(221): Zend_Gdata_App->performHttpRequest('GET', 'http://gdata.yo...', Array, NULL, NULL, NULL)
+#1 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(875): Zend_Gdata->performHttpRequest('GET', 'http://gdata.yo...', Array)
+#2 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(763): Zend_Gdata_App->get('http://gdata.yo...', NULL)
+#3 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(220): Zend_Gdata_App->importUrl('http://gdata.yo...', 'Zend_Gdata_YouT...', NULL)
+#4 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(187): Zend_Gdata_App->getEntry('http://gdata.yo...', 'Zend_Gdata_YouT...')
+#5 /h in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php on line 709
+[17-Oct-2010 13:56:18] PHP Fatal error:  Uncaught exception 'Zend_Gdata_App_HttpException' with message 'Expected response code 200, got 403
+Private video' in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php:709
+Stack trace:
+#0 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(221): Zend_Gdata_App->performHttpRequest('GET', 'http://gdata.yo...', Array, NULL, NULL, NULL)
+#1 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(875): Zend_Gdata->performHttpRequest('GET', 'http://gdata.yo...', Array)
+#2 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(763): Zend_Gdata_App->get('http://gdata.yo...', NULL)
+#3 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(220): Zend_Gdata_App->importUrl('http://gdata.yo...', 'Zend_Gdata_YouT...', NULL)
+#4 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(187): Zend_Gdata_App->getEntry('http://gdata.yo...', 'Zend_Gdata_YouT...')
+#5 /h in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php on line 709
+[17-Oct-2010 13:57:22] PHP Fatal error:  Uncaught exception 'Zend_Gdata_App_HttpException' with message 'Expected response code 200, got 403
+Private video' in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php:709
+Stack trace:
+#0 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(221): Zend_Gdata_App->performHttpRequest('GET', 'http://gdata.yo...', Array, NULL, NULL, NULL)
+#1 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(875): Zend_Gdata->performHttpRequest('GET', 'http://gdata.yo...', Array)
+#2 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(763): Zend_Gdata_App->get('http://gdata.yo...', NULL)
+#3 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(220): Zend_Gdata_App->importUrl('http://gdata.yo...', 'Zend_Gdata_YouT...', NULL)
+#4 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(187): Zend_Gdata_App->getEntry('http://gdata.yo...', 'Zend_Gdata_YouT...')
+#5 /h in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php on line 709
+[17-Oct-2010 13:57:32] PHP Fatal error:  Call to undefined function  get_facebook_cookie() in /home/paulma6/public_html/projects/clippfeed/handler.php on line 9
+[17-Oct-2010 13:57:56] PHP Fatal error:  Uncaught exception 'Zend_Gdata_App_HttpException' with message 'Expected response code 200, got 403
+Private video' in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php:709
+Stack trace:
+#0 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(221): Zend_Gdata_App->performHttpRequest('GET', 'http://gdata.yo...', Array, NULL, NULL, NULL)
+#1 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(875): Zend_Gdata->performHttpRequest('GET', 'http://gdata.yo...', Array)
+#2 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(763): Zend_Gdata_App->get('http://gdata.yo...', NULL)
+#3 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php(220): Zend_Gdata_App->importUrl('http://gdata.yo...', 'Zend_Gdata_YouT...', NULL)
+#4 /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata.php(187): Zend_Gdata_App->getEntry('http://gdata.yo...', 'Zend_Gdata_YouT...')
+#5 /h in /home/paulma6/public_html/projects/clippfeed/apis/gdata/library/Zend/Gdata/App.php on line 709
+[17-Oct-2010 15:02:38] PHP Parse error:  syntax error, unexpected ')' in /home/paulma6/public_html/projects/clippfeed/functions.inc on line 159
+[17-Oct-2010 16:53:01] PHP Warning:  Invalid argument supplied for foreach() in /home/paulma6/public_html/projects/clippfeed/handler.php on line 68
+[17-Oct-2010 16:53:03] PHP Warning:  Invalid argument supplied for foreach() in /home/paulma6/public_html/projects/clippfeed/handler.php on line 68

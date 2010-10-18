@@ -2,10 +2,7 @@
 
 header('Content-type: application/json');
 
-include_once "connect.php";
 include_once "functions.inc";
-include_once "functions2.inc";
-include_once "fb_funcs.php";
 
 $result = "";
 
@@ -44,7 +41,8 @@ switch($_GET['action']) {
 		break;
 	case "getFeed":
 		if($cookies && isset($_GET['arg']) && isset($_GET['page'])) {
-			$return = get_feed($cookies,$_GET['arg'],$_GET['page']);
+			$return['results'] = get_feed($cookies,$_GET['arg'],$_GET['page']);
+			$return['size'] = get_count('c_cid_uid', 'uid='.$cookies['uid']);
 		} else {
  			$return[0] = "You don't seem to have any results.";
 		}
@@ -61,6 +59,22 @@ switch($_GET['action']) {
 		if(isset($_GET['term'])) {
 			$return = get_search($cookies,$_GET['term']);
 		}
+		break;
+	case "addFacebookLinkVids":
+		$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
+		$result = json_decode(fql('SELECT url FROM link WHERE owner='.$cookies['uid'],'json'));
+		$vids = array();
+		$count = 0;
+		foreach($result as $link) {
+			$sid = get_sid($link->url);
+			if($sid!=-1 && extract_vid($link->url,$sid)!='0') {
+				$add = add_clip(extract_vid($link->url,$sid),$sid);
+				if($add) {
+					$count++;
+				}
+			}
+		}
+		$return['count'] = $count;
 		break;
 	default:
 		$return = "";
