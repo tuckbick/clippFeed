@@ -135,7 +135,7 @@ body {
 }
 
 #middle {
-	padding-left:22.9em;
+	padding-left:23em;
 }
 
 #smiddle {
@@ -244,10 +244,10 @@ a:visited, a:hover {
 	display:block;
 	margin:10em auto;
 }
-
-
-
-
+footer {
+	text-align: center;
+	background-color:white;
+}
 
 /* 
  * print styles

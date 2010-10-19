@@ -100,7 +100,7 @@ $cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e1326
     <?php emptyblock('embed') ?>
     
     <footer>
-
+		developed by Paul Marbach and Tucker Bickler at the Facebook Camp Hackathon, UT Austin, October 15-16.<br/>
     </footer>
   </div> <!-- end of #container -->
   <div id="fb-root"></div>

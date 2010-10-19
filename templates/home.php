@@ -42,7 +42,18 @@ startblock('scriptTag'); ?>
 <?php endblock(); 
 
 startblock('readyScript'); ?>
-    populateFeed("ORDER BY c_clips.c_ts_added DESC",0);
+    populateFeed("ORDER BY c_cid_uid.time_posted DESC",0);
+    $.ajax({
+		url:'handler.php',
+		dataType:'json',
+		cache:'false',
+		data: {
+			action: 'pageLoad'
+		},
+		success: function( data ) {
+			$('footer').append(data.footer);
+		}
+	});
 <?php
 endblock();
 ?>

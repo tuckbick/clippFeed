@@ -9,6 +9,9 @@ $result = "";
 $cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
 
 switch($_GET['action']) {
+	case "pageLoad":
+		$return['footer'] = get_count('c_cid_uid','uid',true).' users and counting!';
+		break;
 	case "preview":
 		if(isset($_GET['url']) && isset($_GET['sid']) && extract_vid($_GET['url'],$_GET['sid'])!='0') {
 			$result = get_embed($_GET['url'],$_GET['sid'],630,467);
@@ -42,6 +45,10 @@ switch($_GET['action']) {
 	case "getFeed":
 		if($cookies && isset($_GET['arg']) && isset($_GET['page'])) {
 			$return['results'] = get_feed($cookies,$_GET['arg'],$_GET['page']);
+			foreach($return['results'] as $clip) {
+				$clip['title'] = stripslashes(utf8_decode($clip['title']));
+				$clip['description'] = stripslashes(utf8_decode($clip['description']));
+			}
 			$return['size'] = get_count('c_cid_uid', 'uid='.$cookies['uid']);
 		} else {
  			$return[0] = "You don't seem to have any results.";
@@ -62,13 +69,13 @@ switch($_GET['action']) {
 		break;
 	case "addFacebookLinkVids":
 		$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
-		$result = json_decode(fql('SELECT url FROM link WHERE owner='.$cookies['uid'],'json'));
+		$result = json_decode(fql('SELECT url, created_time FROM link WHERE owner='.$cookies['uid'],'json'));
 		$vids = array();
 		$count = 0;
 		foreach($result as $link) {
 			$sid = get_sid($link->url);
 			if($sid!=-1 && extract_vid($link->url,$sid)!='0') {
-				$add = add_clip(extract_vid($link->url,$sid),$sid);
+				$add = add_clip(extract_vid($link->url,$sid),$sid,$link->created_time);
 				if($add) {
 					$count++;
 				}

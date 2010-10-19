@@ -41,7 +41,7 @@ function deleteVideo() {
 		success: function( data ) {
     		$delete_video.fadeOut(300)
 			$preview.fadeOut(300,function(){$(this).html('');$url.val('');});
-            populateFeed("ORDER BY c_clips.c_ts_added DESC",0);
+            populateFeed("ORDER BY c_cid_uid.time_posted DESC",0);
 		}
 	});
 	return false;

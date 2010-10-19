@@ -126,7 +126,7 @@ search = function() {
 						}
 					});
 				} else {
-					setTimeout(populateFeed("ORDER BY c_clips.c_ts_added DESC",0),50);
+					setTimeout(populateFeed("ORDER BY c_cid_uid.time_posted DESC",0),50);
 				}
 			}
 		} else {
@@ -173,7 +173,7 @@ $search.bind('keyup paste', function(e) {
 					setTimeout(search,50);
 				}
 			} else {
-				setTimeout(populateFeed("ORDER BY c_clips.c_ts_added DESC",0),50);
+				setTimeout(populateFeed("ORDER BY c_cid_uid.time_posted DESC",0),50);
 			}
 		}	
 	});

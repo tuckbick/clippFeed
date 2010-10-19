@@ -9,7 +9,7 @@ $oldPath = set_include_path(get_include_path() . PATH_SEPARATOR . $clientLibrary
 require_once 'Zend/Loader.php';
 Zend_Loader::loadClass('Zend_Gdata_YouTube');
 
-function get_feed($cookies,$order="ORDER BY c_clips.c_ts_added DESC",$page=0,$perpage=15) {
+function get_feed($cookies,$order="ORDER BY c_cid_uid.time_posted DESC",$page=0,$perpage=15) {
 	if($cookies) {
 		$count = get_count('c_cid_uid','uid='.$cookies['uid']);
 		$con = con();
@@ -28,7 +28,7 @@ function get_feed($cookies,$order="ORDER BY c_clips.c_ts_added DESC",$page=0,$pe
 		if($page != 0) {
 			array_push($return,'prev');
 		}
-		if(sizeof($return)<$count && $page<(floor(($count+1)/$perpage)-1)) {
+		if(sizeof($return)<$count && $page<(floor(($count-1)/$perpage))) {
 			array_push($return,'next');
 		}
 	} else {
@@ -93,8 +93,8 @@ function get_video($vid,$sid) {
 			try {
 				$v_obj = $yt->getVideoEntry($vid);
 				if($v_obj->isVideoPrivate()==false && $v_obj->isVideoEmbeddable()==true) {
-					$video['title'] = htmlentities($v_obj->getVideoTitle());
-					$video['desc'] = htmlentities($v_obj->getVideoDescription());
+					$video['title'] = addslashes($v_obj->getVideoTitle());
+					$video['desc'] = addslashes($v_obj->getVideoDescription());
 					$video['private'] = 0;
 				} else {
 					$video['private'] = 1;
@@ -105,26 +105,33 @@ function get_video($vid,$sid) {
 			break;
 		case 1:
 			$vim = unserialize(file_get_contents("http://vimeo.com/api/v2/video/".$vid.".php"));
-			$video['desc'] = htmlentities($vim[0]['description']);
-			$video['title'] = htmlentities($vim[0]['title']);
+			$video['desc'] = addslashes($vim[0]['description']);
+			$video['title'] = addslashes($vim[0]['title']);
 			$video['private'] = 0;
 			break;
 	}
 	return $video;
 }
 
-function get_count($table, $param) {
+function get_count($table, $param, $distinct=false) {
 	$con = con();
-	$query = "SELECT COUNT(*) FROM ".$table." WHERE ".$param;
+	if($distinct==true) {
+		$query = "SELECT DISTINCT ".$param." FROM ".$table;
+	} else {
+		$query = "SELECT COUNT(*) FROM ".$table." WHERE ".$param;
+	}
 	$result = mysql_query($query);
 	$row = mysql_fetch_array($result) or die(mysql_error());
+	if($distinct == true) {
+		$row['COUNT(*)'] = mysql_num_rows($result);
+	}
 	discon($con);
 	return $row['COUNT(*)'];
 }
 
 function get_search($cookies,$term) {
 	if($term=='') {
-		$ret = get_feed($cookies,"ORDER BY c_clips.c_ts_added DESC",0,15);
+		$ret = get_feed($cookies,"ORDER BY c_cid_uid.time_posted DESC",0,15);
 	} else {
 		$con = con();
 		$query = "SELECT * FROM c_clips 
@@ -143,26 +150,29 @@ function get_search($cookies,$term) {
 	return $ret;
 }
 
-function add_clip($vid,$sid) {
+function add_clip($vid,$sid,$time=0) {
 	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
+	if($time==0) {
+		$time = time();
+	}
 	if($cookies) {
 		if(get_count("c_clips","vid='".$vid."'")<1) {
 			$con = con();
 			$video = get_video($vid,$sid);
 			if($video['private'] != 1) {
-				$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`) VALUES ("'.$vid.'","'.$video['title'].'","'.$video['desc'].'",'.$sid.')'; 
+				$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`) VALUES ("'.$vid.'","'.utf8_encode($video['title']).'","'.utf8_encode($video['desc']).'",'.$sid.')'; 
 				$result = mysql_query($query);
 			} else {
 				return false;
 			}
 			discon($con);
 			if($result) {
-				add_assoc_uid($vid,$cookies);
+				add_assoc_uid($vid,$cookies,date('Y-m-d H:i:s',$time));
 			} else {
 				echo $query;
 			}
 		} else {
-			$result = add_assoc_uid($vid,$cookies);
+			$result = add_assoc_uid($vid,$cookies,date('Y-m-d H:i:s',$time));
 		}
 	} else {
 		$result = false;
@@ -170,12 +180,12 @@ function add_clip($vid,$sid) {
 	return $result;
 }
 
-function add_assoc_uid($vid,$cookies) {
+function add_assoc_uid($vid,$cookies,$time) {
 	$cid = get_cid($vid);
 	if(get_count("c_cid_uid","cid=".$cid." AND uid=".$cookies['uid'])<1) {
 		$result = true;
 		$con = con();
-		$query = 'INSERT INTO c_cid_uid VALUES ('.$cid.','.$cookies['uid'].')';
+		$query = "INSERT INTO `c_cid_uid` (`cid`,`uid`,`time_posted`) VALUES (".$cid.",".$cookies["uid"].",'".$time."')";
 		$result = mysql_query($query);
 		discon($con);
 	} else {
