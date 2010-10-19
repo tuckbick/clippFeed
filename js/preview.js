@@ -122,7 +122,7 @@ search = function() {
 							$leftbar.html(ret.join(''));
 						},
 						error: function( ) {
-							setTimeout(populateFeed("ORDER BY c_clips.c_ts_added DESC",0),50);
+							setTimeout(populateFeed("ORDER BY c_cid_uid.time_posted DESC",0),50);
 						}
 					});
 				} else {
@@ -173,7 +173,7 @@ $search.bind('keyup paste', function(e) {
 					setTimeout(search,50);
 				}
 			} else {
-				setTimeout(populateFeed("ORDER BY c_cid_uid.time_posted DESC",0),50);
+				setTimeout(populateFeed("ORDER BY c_clips.c_ts_added DESC",0),50);
 			}
 		}	
 	});
@@ -198,7 +198,7 @@ $add.submit(function(e) {
 					success: function( data ) {
 						$url.val('');
 						$preview.html('<img class="loading" src="assets/done.png" title="done!" />').delay(2000).fadeOut(450,function(){$(this).html('')});
-						setTimeout(populateFeed("ORDER BY c_clips.c_ts_added DESC",0),250);
+						setTimeout(populateFeed("ORDER BY c_cid_uid.time_posted DESC",0),250);
 					}
 				});
 			} else {
