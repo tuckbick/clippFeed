@@ -21,8 +21,8 @@ require_once '../fb_funcs.php';
 
 // Create our Application instance.
 $facebook = new Facebook(array(
-  'appId'  => '148596221850855',
-  'secret' => '25ba671ee41108618fe7b6003e132688',
+  'appId'  => '155021214535823',
+  'secret' => '1440c8e12c04c203755faad3d794248c',
   'cookie' => true,
 ));
 
@@ -113,7 +113,7 @@ $cookies = get_facebook_cookie("155021214535823","1440c8e12c04c203755faad3d79424
   <script src="http://connect.facebook.net/en_US/all.js"></script>
   <script>
       /*
-      FB.init({appId: '148596221850855', status: true, cookie: true, xfbml: true});
+      FB.init({appId: '155021214535823', status: true, cookie: true, xfbml: true});
       FB.Event.subscribe('auth.login', function(response) {
         window.location.reload();
       });
