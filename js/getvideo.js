@@ -1,3 +1,4 @@
+/*
 function getVideo(cid) {
 	$.ajax({
 		url:'handler.php',
@@ -81,3 +82,4 @@ function populateFeed(arg,page) {
 		}
 	});
 }
+*/

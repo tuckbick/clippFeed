@@ -42,6 +42,7 @@ startblock('scriptTag'); ?>
 <?php endblock(); 
 
 startblock('readyScript'); ?>
+    /*
     populateFeed("ORDER BY c_cid_uid.time_posted DESC",0);
     $.ajax({
 		url:'handler.php',
@@ -54,6 +55,7 @@ startblock('readyScript'); ?>
 			$('footer').append(data.footer);
 		}
 	});
+	*/
 <?php
 endblock();
 ?>
