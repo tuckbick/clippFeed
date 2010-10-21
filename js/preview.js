@@ -13,6 +13,7 @@ window.CF = window.CF || (function($,F,w){
         lastURLTime = 0,
         lastSearchTime = 0,
         _cid = 0,
+        _video = null,
         exps = [
             /youtube.com\/watch\?(?=.*v=\w+)(?:\S+)+/,
             /vimeo.com(\/|\/clip:)(\d+)(.*?)/,
@@ -91,9 +92,10 @@ window.CF = window.CF || (function($,F,w){
             };
             setTimeout(pop,100);
         },
-        showVideo = function( data ) {
-            if( !data.hasOwnProperty('embed') ) { return hideVideo() }
-            $clipembed.fadeOut(300,function(){$(this).html(data.embed).delay(100).fadeIn(300,function(){$delete_video.fadeOut(300)})});
+        showVideo = function( oembed ) {
+            if( oembed.type != 'video' ) { return hideVideo() }
+            _video = oembed;
+            $clipembed.fadeOut(300,function(){$(this).html(oembed.html).delay(100).fadeIn(300,function(){$delete_video.fadeOut(300)})});
         },
         hideVideo = function() {
             $delete_video.fadeOut(300)
@@ -106,11 +108,12 @@ window.CF = window.CF || (function($,F,w){
             }, error('getVideo') );
         },
         getPreview = function() {
-            var url = $url.val();
+            getEmbedly( showVideo );
+        },
+        getEmbedly = function( fn ) {
+            var url = $.trim($url.val());
             if( !url || url === '' ) { return hideVideo() }
-            var type = validate( url );
-            if( type === -1 ) { return }
-            get( 'preview', {sid: type, url: url}, showVideo, hideVideo );
+            $.embedly(url, { maxWidth:630 }, fn);
         },
         search = function() {
             var q = $search.val();
@@ -124,6 +127,22 @@ window.CF = window.CF || (function($,F,w){
                 $fb.html('done! '+ data.count + " videos were added from your Facebook.");
                     displayAll();
             });    
+        },
+        addVideo = function() {
+            if( !loginStatus() ) { 
+                alert('You must be logged in to do that!');
+                F.login();
+                return
+            }
+            getEmbedly(function(oembed) {
+                
+            });
+            $preview.hide().html('<img class="loading" src="assets/loading.gif" title="loading..." />').fadeIn('fast');
+            get( 'add', {url: _video.url}, function() {
+                $url.val('');
+                showSuccess();
+                displayAll();
+            });
         };
     
     // PUBLIC
@@ -183,21 +202,7 @@ window.CF = window.CF || (function($,F,w){
         
         $add.bind('submit', function(e){
             stopEvent(e);
-            var url = $url.val(),
-            type = validate( url );
-            if( !loginStatus() ) { 
-                alert('You must be logged in to do that!');
-                F.login();
-                return
-            }
-            if( type === -1 ) { alert('That seems to be an invalid video. Try a different URL!'); return }
-            $preview.hide().html('<img class="loading" src="assets/loading.gif" title="loading..." />').fadeIn('fast');
-            get( 'add', {sid: type, url: url}, function() {
-                $url.val('');
-                showSuccess();
-                displayAll();
-            });
-            return false;
+            addVideo();
         });
         
         $delete_video.bind('click', function() {
