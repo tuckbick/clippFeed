@@ -50,7 +50,7 @@ function nav ( $current = 'blog' ) {
 */
 
 
-$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
+$cookies = get_facebook_cookie("155021214535823","1440c8e12c04c203755faad3d794248c");
 
 ?>
 <!doctype html>
@@ -112,7 +112,7 @@ $cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e1326
   <script src="js/getvideo.js?v=1"></script>
   <script src="http://connect.facebook.net/en_US/all.js"></script>
   <script>
-  	  $login = $('#login');
+      /*
       FB.init({appId: '148596221850855', status: true, cookie: true, xfbml: true});
       FB.Event.subscribe('auth.login', function(response) {
         window.location.reload();
@@ -120,6 +120,7 @@ $cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e1326
       FB.Event.subscribe('auth.logout', function(response) {
         window.location.reload();
       });
+      */
   </script>
   <?php emptyblock('scriptTag') ?>
   <script>
@@ -129,7 +130,7 @@ $cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e1326
   </script>
   <script>
       $(document).ready(function() {
-              <?php emptyblock('readyScript') ?>
+          <?php emptyblock('readyScript') ?>
       });
   </script>
 

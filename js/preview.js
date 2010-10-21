@@ -1,4 +1,4 @@
-var CF = (function($,F,w){
+window.CF = window.CF || (function($,F,w){
     
     // PRIVATE
     var $url = $('#new_url'),
@@ -8,6 +8,8 @@ var CF = (function($,F,w){
         $delete_video = $('#delete_video'),
         $leftbar = $('#left_bar'),
         $clipembed = $('#clip_embed'),
+        $footer = $('#footer'),
+        $fb = $('#addFacebookVids'),
         lastURLTime = 0,
         lastSearchTime = 0,
         _cid = 0,
@@ -26,17 +28,12 @@ var CF = (function($,F,w){
         stopEvent = function(e) {
             if (e.stopPropagation) e.stopPropagation();
             else e.cancelBubble = true;
-
             if (e.preventDefault) e.preventDefault();
             else e.returnValue = false;
         },
-        doFn = function( fn, fn_else ) {
+        loginStatus = function( fn ) {
             F.getLoginStatus( function(response) {
-                if (response.session) {
-                    return fn;
-                } else {
-                    return fn_else;
-                }
+                return !! response.session;
             });
         },
         get = function( action, data, success, error ) {
@@ -53,21 +50,49 @@ var CF = (function($,F,w){
         error = function( msg ) {
             log( msg );
         },
+        showSuccess = function() {
+            $preview.html('<img class="loading" src="assets/done.png" title="done!" />').delay(2000).fadeOut(450,function(){$(this).html('')});
+        },
+        populateFeed = function( arg, page ) {
+            var success = function(data) {
+                var ret = ['<h3>My Videos  <span class="source">(' + data.size + ')</span></h3><ul>'];
+                if( data[0] != "You don't seem to have any results." ) {
+                    for(var i in data['results']) {
+                        if(data.results[i].cid) {
+                            ret.push( '<li><a title="'+data.results[i].cid+'" href="#">'+ data.results[i].c_title +'</a><span class="source">'+ data.results[i].serv_name +'</span></li>' );
+                        } else {
+                            var inc = 1;
+                            if(data.results[i]==="prev") {
+                                inc = -1;
+                            }
+                            inc = page + inc; 
+                            ret.push( '<li style="float:left;"><a href="javascript:populateFeed(\'' + arg + '\',' + inc + ')">'+data.results[i]+'</a>   </li>' );
+                        }
+                    }
+                } else {
+                    ret.push( '<li><em>Welcome to <strong>clippFeed</strong>! This is a site where you can organize and share links to your favorite videos from across the web. To see us in action, login and add some videos!</em></li>' );
+                }
+                ret.push( '<ul>' );
+                $leftbar.html(ret.join(''));
+            };
+            get( 'getFeed', {arg: arg, page: page}, success );
+        },
         populateList = function() {
             var ret = ['<h3>My Videos</h3><ul>'];
             for(var i in data) {
-                ret.push( '<li><a href="javascript:getVideo('+ data[i].cid +')">'+ data[i].c_title +'</a><span class="source">'+ data[i].serv_name +'</span></li>' );
+                ret.push( '<li><a title="'+ data[i].cid +'" href="#">'+ data[i].c_title +'</a><span class="source">'+ data[i].serv_name +'</span></li>' );
             }
             ret.push( '<ul>' );
             $leftbar.html(ret.join(''));
         },
-        errorList = function(msg) {
-            log(msg);
-            setTimeout(populateFeed("ORDER BY c_clips.c_ts_added DESC",0),50);
+        displayAll = function() {
+            var pop = function() {
+                populateFeed("ORDER BY c_clips.c_ts_added DESC",0);
+            };
+            setTimeout(pop,100);
         },
         showVideo = function( data ) {
             if( !data.hasOwnProperty('embed') ) { return hideVideo() }
-            _cid = cid;
             $clipembed.fadeOut(300,function(){$(this).html(data.embed).delay(100).fadeIn(300,function(){$delete_video.fadeOut(300)})});
         },
         hideVideo = function() {
@@ -75,7 +100,10 @@ var CF = (function($,F,w){
             $preview.fadeOut(300,function(){$(this).html('')});
         },
         getVideo = function( cid ) {
-            get( 'getClipEmbed', {cid: cid}, showVideo, error('getVideo') );
+            get( 'getClipEmbed', {cid: cid}, function(data){
+                showVideo(data);
+                _cid = cid;
+            }, error('getVideo') );
         },
         getPreview = function() {
             var url = $url.val();
@@ -89,126 +117,96 @@ var CF = (function($,F,w){
             if( !q ) { return }
             else if( q === '' ) { return errorList() }
             get( 'search', {term: q}, populateList, errorList('search') );
+        },
+        addFacebookLinkVids = function() {
+            $fb.html('working...');
+            get( 'addFacebookLinkVids', {}, function() {
+                $fb.html('done! '+ data.count + " videos were added from your Facebook.");
+                    displayAll();
+            });    
         };
     
     // PUBLIC
     return (function(){
         
         // run on load
-        log('yo!');
+        F.init({appId: '148596221850855', status: true, cookie: true, xfbml: true});
+        F.Event.subscribe('auth.login', function(response) {
+            window.location.reload();
+        });
+        F.Event.subscribe('auth.logout', function(response) {
+            window.location.reload();
+        });
+        displayAll();
+        get( 'pageLoad', {}, function(data){ $footer.append(data.footer) } );
         
-        /*
-        $url.bind('focusin',function() {
+        $leftbar.delegate('li a', 'click', function() {
+            getVideo(parseInt($(this).attr('title')));
+        });
+        
+        $url.bind('focusin', function(){
             if($url.val()=='paste a URL of a video and click add') {
                 $url.val('');
             }
-        });
-        $url.bind('focusout',function() {
+        }).bind('focusout', function(){
             if($url.val()=='') {
                 $url.val('paste a URL of a video and click add');
             }
-        });
-        $search.bind('focusin',function() {
-            if($search.val()=='Search') {
-                $search.val('');
-            }
-        });
-        $search.bind('focusout',function() {
-            if($search.val()=='') {
-                $search.val('Search');
-            }
-        });
-        $url.bind('keyup paste', function(e) {
+        }).bind('keyup paste', function(e){
             var newTime = (new Date()).getTime();
             if( newTime - lastURLTime > 500 ) {
                 lastURLTime = newTime;
-                setTimeout(updatePreview,50);
+                setTimeout(getPreview,50);
             }
         });
-        $search.bind('keyup paste', function(e) {
-            FB.getLoginStatus(function(response) {
-                  if (response.session) {
-                      if($search.val() !== '') {
-                        var newTime = (new Date()).getTime();
-                        if( newTime - lastSearchTime > 500 ) {
-                            lastSearchTime = newTime;
-                            setTimeout(search,50);
-                        }
-                    } else {
-                        setTimeout(populateFeed("ORDER BY c_clips.c_ts_added DESC",0),50);
-                    }
-                }    
-            });
+        
+        $search.bind('focusin', function(){
+            if($search.val()=='Search') {
+                $search.val('');
+            }
+        }).bind('focusout', function() {
+            if($search.val()=='') {
+                $search.val('Search');
+            }
+        }).bind('keyup paste', function() {
+            if( !loginStatus() ) { return }
+            if( $search.val() !== '' ) {
+                var newTime = (new Date()).getTime();
+                if( newTime - lastSearchTime > 500 ) {
+                    lastSearchTime = newTime;
+                    setTimeout(search,50);
+                }
+                return;
+            }
+            displayAll();
         });
-        $add.submit(function(e) {
+        
+        $add.bind('submit', function(e){
             stopEvent(e);
             var url = $url.val(),
             type = validate( url );
-            FB.getLoginStatus(function(response) {
-                  if (response.session) {
-                      if(type !== -1) {
-                        $preview.hide().html('<img class="loading" src="assets/loading.gif" title="loading..." />').fadeIn('fast');
-                        $.ajax({
-                            url:'handler.php',
-                            dataType:'json',
-                            cache:'false',
-                            data: {
-                                action: 'add',
-                                sid: type,
-                                url: url
-                            },
-                            success: function( data ) {
-                                $url.val('');
-                                $preview.html('<img class="loading" src="assets/done.png" title="done!" />').delay(2000).fadeOut(450,function(){$(this).html('')});
-                                setTimeout(populateFeed("ORDER BY c_clips.c_ts_added DESC",0),250);
-                            }
-                        });
-                    } else {
-                        alert('That seems to be an invalid video. Try a different URL!');
-                    }
-                  } else {
-                      alert('You must be logged in to do that!');
-                      FB.login();
-                  }
+            if( !loginStatus() ) { 
+                alert('You must be logged in to do that!');
+                F.login();
+                return
+            }
+            if( type === -1 ) { alert('That seems to be an invalid video. Try a different URL!'); return }
+            $preview.hide().html('<img class="loading" src="assets/loading.gif" title="loading..." />').fadeIn('fast');
+            get( 'add', {sid: type, url: url}, function() {
+                $url.val('');
+                showSuccess();
+                displayAll();
             });
             return false;
         });
-        $sadd.submit(function(e) {
-            stopEvent(e);
-            FB.getLoginStatus(function(response) {
-                var url = $url.val(),
-                type = validate( url );
-                if (response.session) {
-                    if(type !== -1) {
-                        $spreview.hide().html('<img class="loading" src="assets/loading.gif" title="loading..." />').fadeIn('fast');
-                        $.ajax({
-                            url:'handler.php',
-                            dataType:'json',
-                            cache:'false',
-                            data: {
-                                action: 'add',
-                                sid: type,
-                                url: url
-                            },
-                            success: function( data ) {
-                                $url.val('');
-                                $spreview.html('<img class="loading" src="assets/done.png" title="done!" />').delay(2000).fadeOut(450,function(){$(this).html('')});
-                                setTimeout(window.close,3000);
-                            }
-                        });
-                
-                    } else {
-                        alert('That seems to be an invalid video. Try a different URL!');
-                    }
-                } else {
-                    alert('You must be logged in to do that!');
-                    FB.login();
-                }
-            });
-            return false;
-        });
-        */
         
+        $delete_video.bind('click', function() {
+            var success = function() {
+                 hideVideo()
+                 populateFeed("ORDER BY c_cid_uid.time_posted DESC",0);
+            };
+            get( 'delete', {cid: _cid}, success );
+        });
         
         // things to assign to namespace 'CF'
         return {
@@ -218,7 +216,7 @@ var CF = (function($,F,w){
     })();
     
 })(jQuery,FB,window);
-
+/*
 var exps = [
     /youtube.com\/watch\?(?=.*v=\w+)(?:\S+)+/,
     /vimeo.com(\/|\/clip:)(\d+)(.*?)/,
@@ -466,3 +464,4 @@ $sadd.submit(function(e) {
     });
     return false;
 });
+*/
