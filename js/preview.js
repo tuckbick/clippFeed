@@ -130,7 +130,7 @@ window.CF = window.CF || (function($,F,w){
     return (function(){
         
         // run on load
-        F.init({appId: '148596221850855', status: true, cookie: true, xfbml: true});
+        F.init({appId: '155021214535823', status: true, cookie: true, xfbml: true});
         F.Event.subscribe('auth.login', function(response) {
             window.location.reload();
         });
