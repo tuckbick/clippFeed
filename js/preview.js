@@ -91,9 +91,13 @@ window.CF = window.CF || (function($,F,w){
             };
             setTimeout(pop,100);
         },
-        showVideo = function( data ) {
+        showVideo = function( oembed, dict ) {
+            /*
             if( !data.hasOwnProperty('embed') ) { return hideVideo() }
             $clipembed.fadeOut(300,function(){$(this).html(data.embed).delay(100).fadeIn(300,function(){$delete_video.fadeOut(300)})});
+            */
+            log(oembed);
+            log(dict);
         },
         hideVideo = function() {
             $delete_video.fadeOut(300)
@@ -110,7 +114,13 @@ window.CF = window.CF || (function($,F,w){
             if( !url || url === '' ) { return hideVideo() }
             var type = validate( url );
             if( type === -1 ) { return }
+            $.embedly(url, {}, showVideo);
+            /*
+            function(oembed, dict){
+                alert(oembed.title);
+            });
             get( 'preview', {sid: type, url: url}, showVideo, hideVideo );
+            */
         },
         search = function() {
             var q = $search.val();

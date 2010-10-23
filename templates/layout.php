@@ -107,9 +107,9 @@ $cookies = get_facebook_cookie("155021214535823","1440c8e12c04c203755faad3d79424
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script>!window.jQuery && document.write('<script src="js/jquery-1.4.2.min.js"><\/script>')</script>
   <script src="js/jquery-effects-core.min.js"></script>
+  <script src="js/jquery.embedly.min.js?v=1"></script>
   <script src="js/plugins.js?v=1"></script>
   <script src="js/script.js?v=1"></script>
-  <script src="js/getvideo.js?v=1"></script>
   <script src="http://connect.facebook.net/en_US/all.js"></script>
   <script>
       /*

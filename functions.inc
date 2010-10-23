@@ -151,7 +151,7 @@ function get_search($cookies,$term) {
 }
 
 function add_clip($vid,$sid,$time=0) {
-	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
+	$cookies = get_facebook_cookie("155021214535823","1440c8e12c04c203755faad3d794248c");
 	if($time==0) {
 		$time = time();
 	}
