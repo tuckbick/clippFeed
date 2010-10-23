@@ -4,10 +4,6 @@ require_once 'functions2.inc';
 require_once 'fb_funcs.php';
 require_once 'connect.php';
 require_once 'apis/facebook-php-sdk/src/facebook.php';
-$clientLibraryPath = 'apis/gdata/library';
-$oldPath = set_include_path(get_include_path() . PATH_SEPARATOR . $clientLibraryPath);
-require_once 'Zend/Loader.php';
-Zend_Loader::loadClass('Zend_Gdata_YouTube');
 
 function get_feed($cookies,$order="ORDER BY c_cid_uid.time_posted DESC",$page=0,$perpage=15) {
 	if($cookies) {
@@ -15,7 +11,6 @@ function get_feed($cookies,$order="ORDER BY c_cid_uid.time_posted DESC",$page=0,
 		$con = con();
 		$query = 'SELECT * FROM c_cid_uid
 			INNER JOIN c_clips ON c_cid_uid.cid = c_clips.cid
-			INNER JOIN c_servs ON c_clips.sid = c_servs.sid 
 			WHERE c_cid_uid.uid = '.$cookies['uid'].' '.$order.' LIMIT 15 OFFSET '.($page*$perpage);
 		$result = mysql_query($query);
 		discon($con);
@@ -23,8 +18,8 @@ function get_feed($cookies,$order="ORDER BY c_cid_uid.time_posted DESC",$page=0,
 			$return[$row['cid']] = $row;
 		}
 		if(sizeof($return)==0) {
-			$return[0] = "You don't seem to have any results.";
-		} 
+			$return[0] = "You don't seem to have any clips yet! Why don't you add some by using our handy bookmarklet or by copy and pasting any video's url in the box to the right?";
+		}
 		if($page != 0) {
 			array_push($return,'prev');
 		}
@@ -32,28 +27,14 @@ function get_feed($cookies,$order="ORDER BY c_cid_uid.time_posted DESC",$page=0,
 			array_push($return,'next');
 		}
 	} else {
-		$return[0] = "You don't seem to have any results.";
+		$return[0] = "You don't seem to be logged in! Click the Facebook \"Login\" button on the right to start clippFeeding!";
 	}
 	return $return;
 }
 
-function get_embed($url,$sid,$width,$height) {
-	$return = '';
-	$vid = extract_vid($url,$sid);
-	switch($sid) {
-		case 0:
-			$return .= '<object width="'.$width.'" height="'.$width.'"><param name="movie" value="http://www.youtube.com/v/'.$vid.'?fs=1&amp;hl=en_US"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/'.$vid.'?fs=1&amp;hl=en_US" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="'.$width.'" height="'.$height.'"></embed></object>';
-			break;
-		case 1:
-			$return .= '<iframe src="http://player.vimeo.com/video/'.$vid.'?color=ffffff" width="'.$width.'" height="'.$height.'" frameborder="0"></iframe>';
-			break;
-	}
-	return $return;
-}
-
-function get_cid($vid) {
+function get_cid($url) {
 	$con = con();
-	$query = 'SELECT * FROM `c_clips` WHERE vid="'.$vid.'" LIMIT 1';
+	$query = 'SELECT * FROM `c_clips` WHERE c_url="'.$url.'" LIMIT 1';
 	$result = mysql_query($query);
 	while($row = mysql_fetch_assoc($result)) {
 		$return = $row['cid'];
@@ -62,20 +43,10 @@ function get_cid($vid) {
 	return $return;
 }
 
-function get_sid($url) {
-	$exps = array('/youtube.com\/watch\?(?=.*v=\w+)(?:\S+)+/','/vimeo.com(\/|\/clip:)(\d+)(.*?)/');
-	for($i=0;$i<sizeof($exps);$i++) {
-        if (preg_match($exps[$i],$url)) {
-        	return $i;
-        }
-    }
-    return -1;
-}
 
 function get_clip($cid,$limit="LIMIT 1") {
 	$con = con();
 	$query = 'SELECT * FROM c_clips 
-		INNER JOIN c_servs ON c_clips.sid = c_servs.sid 
 		WHERE cid='.$cid.' '.$limit;
 	$result = mysql_query($query);
 	while($row = mysql_fetch_assoc($result)) {
@@ -85,32 +56,9 @@ function get_clip($cid,$limit="LIMIT 1") {
 	return $return;
 }
 
-function get_video($vid,$sid) {
-	switch($sid) {
-		case 0:
-			$yt = new Zend_Gdata_YouTube();
-			
-			try {
-				$v_obj = $yt->getVideoEntry($vid);
-				if($v_obj->isVideoPrivate()==false && $v_obj->isVideoEmbeddable()==true) {
-					$video['title'] = addslashes($v_obj->getVideoTitle());
-					$video['desc'] = addslashes($v_obj->getVideoDescription());
-					$video['private'] = 0;
-				} else {
-					$video['private'] = 1;
-				}
-			} catch(Zend_Gdata_App_HttpException $e) {
-				$video['private'] = 1;
-			}
-			break;
-		case 1:
-			$vim = unserialize(file_get_contents("http://vimeo.com/api/v2/video/".$vid.".php"));
-			$video['desc'] = addslashes($vim[0]['description']);
-			$video['title'] = addslashes($vim[0]['title']);
-			$video['private'] = 0;
-			break;
-	}
-	return $video;
+function get_video($url,$width=630) {
+	$video = file_get_contents("http://api.embed.ly/v1/api/oembed?url=".$url."&maxwidth=600");
+	return json_decode($video);
 }
 
 function get_count($table, $param, $distinct=false) {
@@ -136,7 +84,6 @@ function get_search($cookies,$term) {
 		$con = con();
 		$query = "SELECT * FROM c_clips 
 				INNER JOIN c_cid_uid ON c_cid_uid.cid=c_clips.cid 
-				INNER JOIN c_servs ON c_servs.sid=c_clips.sid 
 				WHERE CONCAT(c_clips.c_title, ' ', c_clips.c_desc) LIKE '%".$term."%'";
 		if($cookies) { $query .= " AND c_cid_uid.uid=".$cookies['uid']; }
 		$query .= ' LIMIT 15';
@@ -150,29 +97,25 @@ function get_search($cookies,$term) {
 	return $ret;
 }
 
-function add_clip($vid,$sid,$time=0) {
-	$cookies = get_facebook_cookie("155021214535823","1440c8e12c04c203755faad3d794248c");
+function add_clip($url,$time=0) {
+	$video = get_video($url);
+	$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
 	if($time==0) {
 		$time = time();
 	}
 	if($cookies) {
-		if(get_count("c_clips","vid='".$vid."'")<1) {
+		if(get_count("c_clips","c_url='".$video->url."'")<1) {
 			$con = con();
-			$video = get_video($vid,$sid);
-			if($video['private'] != 1) {
-				$query = 'INSERT INTO c_clips (`vid`,`c_title`,`c_desc`,`sid`) VALUES ("'.$vid.'","'.utf8_encode($video['title']).'","'.utf8_encode($video['desc']).'",'.$sid.')'; 
-				$result = mysql_query($query);
-			} else {
-				return false;
-			}
+			$query = 'INSERT INTO c_clips (`c_title`,`c_desc`,`c_url`) VALUES ("'.utf8_encode(addslashes($video->title)).'","'.utf8_encode(addslashes($video->description)).'","'.$url.'")'; 
+			$result = mysql_query($query);
 			discon($con);
 			if($result) {
-				add_assoc_uid($vid,$cookies,date('Y-m-d H:i:s',$time));
+				add_assoc_uid($url,$cookies,date('Y-m-d H:i:s',$time));
 			} else {
 				echo $query;
 			}
 		} else {
-			$result = add_assoc_uid($vid,$cookies,date('Y-m-d H:i:s',$time));
+			$result = add_assoc_uid($video['url'],$cookies,date('Y-m-d H:i:s',$time));
 		}
 	} else {
 		$result = false;
@@ -180,8 +123,8 @@ function add_clip($vid,$sid,$time=0) {
 	return $result;
 }
 
-function add_assoc_uid($vid,$cookies,$time) {
-	$cid = get_cid($vid);
+function add_assoc_uid($url,$cookies,$time) {
+	$cid = get_cid($url);
 	if(get_count("c_cid_uid","cid=".$cid." AND uid=".$cookies['uid'])<1) {
 		$result = true;
 		$con = con();

@@ -21,10 +21,11 @@ require_once '../fb_funcs.php';
 
 // Create our Application instance.
 $facebook = new Facebook(array(
-  'appId'  => '155021214535823',
-  'secret' => '1440c8e12c04c203755faad3d794248c',
+  'appId'  => '148596221850855',
+  'secret' => '25ba671ee41108618fe7b6003e132688',
   'cookie' => true,
 ));
+
 
 blockbase();
 /*
@@ -50,8 +51,7 @@ function nav ( $current = 'blog' ) {
 */
 
 
-$cookies = get_facebook_cookie("155021214535823","1440c8e12c04c203755faad3d794248c");
-
+$cookies = get_facebook_cookie("148596221850855","25ba671ee41108618fe7b6003e132688");
 ?>
 <!doctype html>
 <html lang="en" class="no-js">
@@ -92,7 +92,6 @@ $cookies = get_facebook_cookie("155021214535823","1440c8e12c04c203755faad3d79424
         <a id="addFacebookVids" href="javascript:addFacebookLinkVids()">click here to import videos that you've posted on Facebook</a>
 
     </header>
-    
     <div id="main">
         <?php emptyblock('content') ?>
     </div>
