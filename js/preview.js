@@ -8,10 +8,12 @@ window.CF = window.CF || (function($,F,w){
         $delete_video = $('#delete_video'),
         $leftbar = $('#left_bar'),
         $clipembed = $('#clip_embed'),
-        $footer = $('#footer'),
+        $footer = $('footer'),
         $fb = $('#addFacebookVids'),
         lastURLTime = 0,
+        URLIntervalID = null,
         lastSearchTime = 0,
+        searchIntervalID = null,
         _cid = 0,
         _video = null,
         exps = [
@@ -51,6 +53,12 @@ window.CF = window.CF || (function($,F,w){
         error = function( msg ) {
             log( msg );
         },
+        showError = function() {
+            $preview.html('<img class="loading" src="assets/error.png" title="error!" />');
+        },
+        showLoading = function() {
+            $preview.fadeOut('fast',function(){$(this).html('<img class="loading" src="assets/loading.gif" title="loading..." />').fadeIn('fast')});
+        },
         showSuccess = function() {
             $preview.html('<img class="loading" src="assets/done.png" title="done!" />').delay(2000).fadeOut(450,function(){$(this).html('')});
         },
@@ -60,7 +68,7 @@ window.CF = window.CF || (function($,F,w){
                 if( data[0] != "You don't seem to have any results." ) {
                     for(var i in data['results']) {
                         if(data.results[i].cid) {
-                            ret.push( '<li><a title="'+data.results[i].cid+'" href="#">'+ data.results[i].c_title +'</a><span class="source">'+ data.results[i].serv_name +'</span></li>' );
+                            ret.push( '<li><a title="'+data.results[i].cid+'" href="#">'+ data.results[i].c_title +'</a></li>' );
                         } else {
                             var inc = 1;
                             if(data.results[i]==="prev") {
@@ -88,17 +96,17 @@ window.CF = window.CF || (function($,F,w){
         },
         displayAll = function() {
             var pop = function() {
-                populateFeed("ORDER BY c_clips.c_ts_added DESC",0);
+                populateFeed(0,0);
             };
             setTimeout(pop,100);
         },
         showVideo = function( oembed ) {
-            if( oembed.type != 'video' ) { return hideVideo() }
             _video = oembed;
             $clipembed.fadeOut(300,function(){$(this).html(oembed.html).delay(100).fadeIn(300,function(){$delete_video.fadeOut(300)})});
         },
         hideVideo = function() {
-            $delete_video.fadeOut(300)
+            $delete_video.fadeOut(300);
+            _video = null;
             $preview.fadeOut(300,function(){$(this).html('')});
         },
         getVideo = function( cid ) {
@@ -108,12 +116,18 @@ window.CF = window.CF || (function($,F,w){
             }, error('getVideo') );
         },
         getPreview = function() {
+            //log('getPreview');
             getEmbedly( showVideo );
         },
         getEmbedly = function( fn ) {
             var url = $.trim($url.val());
             if( !url || url === '' ) { return hideVideo() }
-            $.embedly(url, { maxWidth:630 }, fn);
+            $.embedly(url, { maxWidth:630 }, function(oembed, dict){
+                if( oembed == null || !oembed.hasOwnProperty('type') || oembed.type != 'video' ) { return showError() }
+                fn(oembed);
+                return
+            });
+            //showError();
         },
         search = function() {
             var q = $search.val();
@@ -129,27 +143,43 @@ window.CF = window.CF || (function($,F,w){
             });    
         },
         addVideo = function() {
-            if( !loginStatus() ) { 
-                alert('You must be logged in to do that!');
-                F.login();
-                return
+            showLoading();
+            if(_video.url !== undefined) {
+            	$url.val(_video.url);
             }
-            getEmbedly(function(oembed) {
-                
-            });
-            $preview.hide().html('<img class="loading" src="assets/loading.gif" title="loading..." />').fadeIn('fast');
-            get( 'add', {url: _video.url}, function() {
+            get( 'add', {url: $url.val() }, function() {
                 $url.val('');
                 showSuccess();
                 displayAll();
-            });
+            }, showError );
+        };
+        
+    var urlTimer = function() {
+            var newTime = (new Date()).getTime();
+            //if (lastURLTime === 0) { lastURLTime = newTime }
+            log(newTime - lastURLTime);
+            if (newTime - lastURLTime > 400) {
+                //log(newTime - lastURLTime);
+                lastURLTime = newTime;
+                setTimeout(getPreview, 50);
+                clearInterval(URLIntervalID);
+            }
+        },
+        searchTimer = function() {
+            var newTime = (new Date()).getTime();
+            //if (lastSearchTime === 0) { lastSearchTime = newTime }
+            if (newTime - lastSearchTime > 400) {
+                lastSearchTime = newTime;
+                setTimeout(search, 50);
+                clearInterval(searchIntervalID);
+            }
         };
     
     // PUBLIC
     return (function(){
         
         // run on load
-        F.init({appId: '155021214535823', status: true, cookie: true, xfbml: true});
+        F.init({appId: '148596221850855', status: true, cookie: true, xfbml: true});
         F.Event.subscribe('auth.login', function(response) {
             window.location.reload();
         });
@@ -171,12 +201,10 @@ window.CF = window.CF || (function($,F,w){
             if($url.val()=='') {
                 $url.val('paste a URL of a video and click add');
             }
-        }).bind('keyup paste', function(e){
-            var newTime = (new Date()).getTime();
-            if( newTime - lastURLTime > 500 ) {
-                lastURLTime = newTime;
-                setTimeout(getPreview,50);
-            }
+        }).bind('keyup paste', function(){
+            if (URLIntervalID) { clearInterval(URLIntervalID) }
+            lastURLTime = (new Date()).getTime();
+            URLIntervalID = setInterval(urlTimer, 100);
         });
         
         $search.bind('focusin', function(){
@@ -189,15 +217,10 @@ window.CF = window.CF || (function($,F,w){
             }
         }).bind('keyup paste', function() {
             if( !loginStatus() ) { return }
-            if( $search.val() !== '' ) {
-                var newTime = (new Date()).getTime();
-                if( newTime - lastSearchTime > 500 ) {
-                    lastSearchTime = newTime;
-                    setTimeout(search,50);
-                }
-                return;
-            }
-            displayAll();
+            if( $.trim($search.val()) === '' ) { return displayAll() }
+            if( searchIntervalID ) { clearInterval(searchIntervalID) }
+            lastSearchTime = (new Date()).getTime();
+            searchIntervalID = setInterval(searchTimer, 100);
         });
         
         $add.bind('submit', function(e){
@@ -208,7 +231,7 @@ window.CF = window.CF || (function($,F,w){
         $delete_video.bind('click', function() {
             var success = function() {
                  hideVideo()
-                 populateFeed("ORDER BY c_cid_uid.time_posted DESC",0);
+                 populateFeed(0,0);
             };
             get( 'delete', {cid: _cid}, success );
         });
