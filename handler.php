@@ -60,8 +60,12 @@ switch($_GET['action']) {
 	case "getClipEmbed":
 		if(isset($_GET['cid'])) {
 			$c = get_clip($_GET['cid']);
-			$video = $get_video($c['url']);
-			$return['embed'] = $video['embed'];
+			$video = get_video($c['c_url']);
+			if(isset($video->embed)) {
+				$return['html'] = $video->embed;
+			} else {
+				$return['html'] = $video->html;
+			}
 		} else {
 			$return['embed'] = "<p>Please select a valid video!</p>";
 		}
