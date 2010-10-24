@@ -146,7 +146,6 @@ window.CF = window.CF || (function($,F,w){
     var urlTimer = function() {
             var newTime = (new Date()).getTime();
             //if (lastURLTime === 0) { lastURLTime = newTime }
-            log(newTime - lastURLTime);
             if (newTime - lastURLTime > 400) {
                 //log(newTime - lastURLTime);
                 lastURLTime = newTime;
